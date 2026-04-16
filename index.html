@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>POWDER RHYTHM :: Baker City :: IT'S HAPPENING</title>
+  <title>POWDER RHYTHM :: A Blog :: Baker City</title>
+  <meta name="description"
+    content="A single-page blog about Powder Rhythm in Baker City, Oregon. Updated as things develop. There will apparently be tigers.">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Boogaloo&family=Fredoka+One&family=Permanent+Marker&family=Special+Elite&display=swap');
 
     :root {
       --neon-pink: #ff00cc;
+      --hot-pink: #ff4da6;
       --neon-teal: #00ffcc;
       --neon-yellow: #ffff00;
       --snow-white: #f0f8ff;
@@ -16,13 +20,17 @@
       --deep-purple: #1a0033;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       background-color: var(--deep-purple);
       background-image:
-        radial-gradient(ellipse at 20% 50%, rgba(0,255,204,0.08) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 20%, rgba(255,0,204,0.08) 0%, transparent 60%);
+        radial-gradient(ellipse at 20% 50%, rgba(0, 255, 204, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(255, 0, 204, 0.08) 0%, transparent 60%);
       color: var(--snow-white);
       font-family: 'Special Elite', cursive;
       overflow-x: hidden;
@@ -31,20 +39,31 @@
     /* STARS */
     .stars {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
       z-index: 0;
     }
+
     .star {
       position: absolute;
       background: white;
       border-radius: 50%;
       animation: twinkle var(--dur) infinite alternate;
     }
+
     @keyframes twinkle {
-      from { opacity: 0.1; transform: scale(0.8); }
-      to   { opacity: 1;   transform: scale(1.2); }
+      from {
+        opacity: 0.1;
+        transform: scale(0.8);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1.2);
+      }
     }
 
     /* SNOWFLAKES */
@@ -52,14 +71,82 @@
       position: fixed;
       top: -20px;
       font-size: 1.2em;
-      color: rgba(255,255,255,0.7);
+      color: rgba(255, 255, 255, 0.7);
       animation: fall linear infinite;
       pointer-events: none;
       z-index: 1;
     }
+
     @keyframes fall {
-      0%   { transform: translateY(-20px) rotate(0deg);   opacity: 1; }
-      100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+      0% {
+        transform: translateY(-20px) rotate(0deg);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    /* ═══════════════════════
+       OLD-SCHOOL NAVIGATION
+    ═══════════════════════ */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(26, 0, 51, 0.92);
+      border-bottom: 2px solid var(--neon-teal);
+      backdrop-filter: blur(6px);
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+    }
+
+    .site-nav .nav-title {
+      font-family: 'Permanent Marker', cursive;
+      color: var(--neon-pink);
+      font-size: 0.95rem;
+      letter-spacing: 0.05em;
+      text-shadow: 0 0 8px rgba(255, 0, 204, 0.7);
+      margin-right: 1rem;
+      white-space: nowrap;
+    }
+
+    .nav-sep {
+      color: rgba(240, 248, 255, 0.2);
+      margin: 0 0.4rem;
+      font-size: 0.8rem;
+    }
+
+    .site-nav a {
+      font-family: 'Boogaloo', cursive;
+      font-size: 0.82rem;
+      color: var(--neon-teal);
+      text-decoration: none;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.4rem;
+      border-radius: 3px;
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
+    }
+
+    .site-nav a:hover {
+      background: rgba(0, 255, 204, 0.12);
+      color: var(--neon-yellow);
+    }
+
+    .site-nav a.new-tag::after {
+      content: ' NEW';
+      font-size: 0.6rem;
+      color: var(--hot-pink);
+      vertical-align: super;
+      letter-spacing: 0.05em;
+      animation: blink 1.2s step-end infinite;
     }
 
     /* MARQUEE WRAPPER */
@@ -76,13 +163,20 @@
       position: relative;
       z-index: 10;
     }
+
     .marquee-inner {
       display: inline-block;
       animation: marquee 18s linear infinite;
     }
+
     @keyframes marquee {
-      from { transform: translateX(100vw); }
-      to   { transform: translateX(-100%); }
+      from {
+        transform: translateX(100vw);
+      }
+
+      to {
+        transform: translateX(-100%);
+      }
     }
 
     /* HEADER */
@@ -101,8 +195,11 @@
       text-transform: uppercase;
       animation: blink 1.4s step-end infinite;
     }
+
     @keyframes blink {
-      50% { opacity: 0; }
+      50% {
+        opacity: 0;
+      }
     }
 
     .main-title {
@@ -113,12 +210,18 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      filter: drop-shadow(0 0 20px rgba(255,0,204,0.6));
+      filter: drop-shadow(0 0 20px rgba(255, 0, 204, 0.6));
       animation: pulse-glow 3s ease-in-out infinite alternate;
     }
+
     @keyframes pulse-glow {
-      from { filter: drop-shadow(0 0 10px rgba(255,0,204,0.4)); }
-      to   { filter: drop-shadow(0 0 40px rgba(0,255,204,0.9)); }
+      from {
+        filter: drop-shadow(0 0 10px rgba(255, 0, 204, 0.4));
+      }
+
+      to {
+        filter: drop-shadow(0 0 40px rgba(0, 255, 204, 0.9));
+      }
     }
 
     .subtitle {
@@ -128,6 +231,15 @@
       letter-spacing: 0.15em;
       margin-top: 0.3rem;
       text-shadow: 2px 2px 0 #800080, 4px 4px 0 #400040;
+    }
+
+    .blog-tagline {
+      font-family: 'Boogaloo', cursive;
+      font-size: 0.85rem;
+      color: rgba(240, 248, 255, 0.35);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      margin-top: 0.6rem;
     }
 
     /* MOUNTAIN ILLUSTRATION */
@@ -140,25 +252,191 @@
       margin: 0.5rem 0;
       animation: sway 4s ease-in-out infinite alternate;
     }
+
     @keyframes sway {
-      from { transform: rotate(-1deg); }
-      to   { transform: rotate(1deg); }
+      from {
+        transform: rotate(-1deg);
+      }
+
+      to {
+        transform: rotate(1deg);
+      }
+    }
+
+    /* ═══════════════════════
+       BLOG ENTRY STRUCTURE
+    ═══════════════════════ */
+    .blog-feed {
+      position: relative;
+      z-index: 5;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 1.5rem 3rem;
+    }
+
+    .entry {
+      margin-bottom: 4rem;
+      scroll-margin-top: 80px;
+      /* offset for sticky nav */
+    }
+
+    .entry-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    .entry-date {
+      font-family: 'Boogaloo', cursive;
+      font-size: 0.78rem;
+      color: rgba(240, 248, 255, 0.35);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .entry-rule {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(0, 255, 204, 0.3), transparent);
+      min-width: 30px;
+    }
+
+    .entry-tag {
+      font-family: 'Boogaloo', cursive;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      background: rgba(255, 0, 204, 0.15);
+      border: 1px solid rgba(255, 0, 204, 0.3);
+      border-radius: 3px;
+      padding: 0.1rem 0.4rem;
+      color: var(--hot-pink);
+    }
+
+    /* SECTIONS / PANELS */
+    .section {
+      margin-bottom: 2rem;
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid var(--neon-teal);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 0 30px rgba(0, 255, 204, 0.15), inset 0 0 20px rgba(0, 255, 204, 0.03);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: repeating-linear-gradient(45deg,
+          transparent,
+          transparent 10px,
+          rgba(0, 255, 204, 0.02) 10px,
+          rgba(0, 255, 204, 0.02) 11px);
+      pointer-events: none;
+    }
+
+    .panel-title {
+      font-family: 'Permanent Marker', cursive;
+      font-size: 1.8rem;
+      color: var(--neon-pink);
+      text-shadow: 0 0 15px rgba(255, 0, 204, 0.8);
+      margin-bottom: 1rem;
+    }
+
+    p {
+      line-height: 1.75;
+      font-size: 1.05rem;
+      color: rgba(240, 248, 255, 0.9);
+    }
+
+    .highlight {
+      color: var(--neon-yellow);
+      font-family: 'Permanent Marker', cursive;
+      font-size: 1.15em;
+      filter: drop-shadow(0 0 5px rgba(255, 255, 0, 0.2));
+    }
+
+    .wiggle {
+      display: inline-block;
+      animation: wiggle 0.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes wiggle {
+      from {
+        transform: rotate(-3deg);
+      }
+
+      to {
+        transform: rotate(3deg);
+      }
+    }
+
+    /* ═══════════════════════════
+       POSTER ENTRY SPECIFIC STYLES
+    ═══════════════════════════ */
+    .poster-frame {
+      text-align: center;
+      margin: 1.5rem 0;
+    }
+
+    .poster-frame img {
+      max-width: 380px;
+      width: 88%;
+      border-radius: 5px;
+      display: inline-block;
+      box-shadow:
+        0 0 0 3px #e8739a,
+        0 0 0 7px var(--deep-purple),
+        0 0 50px rgba(232, 115, 154, 0.55),
+        0 0 100px rgba(255, 0, 204, 0.2);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .poster-frame img:hover {
+      transform: scale(1.025) rotate(-0.75deg);
+      box-shadow:
+        0 0 0 3px #e8739a,
+        0 0 0 7px var(--deep-purple),
+        0 0 80px rgba(232, 115, 154, 0.9),
+        0 0 140px rgba(255, 0, 204, 0.35);
+    }
+
+    .poster-caption {
+      font-family: 'Boogaloo', cursive;
+      font-size: 0.75rem;
+      color: rgba(240, 248, 255, 0.25);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-top: 0.6rem;
+      text-align: center;
     }
 
     /* COUNTDOWN */
     .countdown-section {
-      position: relative;
-      z-index: 5;
       text-align: center;
-      padding: 1.5rem;
+      padding: 1.5rem 0;
     }
+
     .countdown-label {
       font-family: 'Boogaloo', cursive;
-      color: var(--neon-teal);
+      color: var(--neon-pink);
       font-size: 1.1rem;
       letter-spacing: 0.3em;
       text-transform: uppercase;
+      text-shadow: 0 0 10px rgba(255, 0, 204, 0.3);
     }
+
     .countdown-boxes {
       display: flex;
       justify-content: center;
@@ -166,14 +444,16 @@
       margin-top: 0.8rem;
       flex-wrap: wrap;
     }
+
     .countdown-box {
-      background: rgba(255,255,255,0.07);
+      background: rgba(255, 255, 255, 0.07);
       border: 2px solid var(--neon-pink);
       border-radius: 8px;
       padding: 0.6rem 1.2rem;
       min-width: 80px;
-      box-shadow: 0 0 15px rgba(255,0,204,0.4), inset 0 0 10px rgba(255,0,204,0.1);
+      box-shadow: 0 0 15px rgba(255, 0, 204, 0.4), inset 0 0 10px rgba(255, 0, 204, 0.1);
     }
+
     .countdown-box .num {
       font-family: 'Fredoka One', cursive;
       font-size: 2.5rem;
@@ -181,6 +461,7 @@
       line-height: 1;
       display: block;
     }
+
     .countdown-box .lbl {
       font-size: 0.65rem;
       letter-spacing: 0.2em;
@@ -194,70 +475,6 @@
       font-size: 2rem;
       margin: 1rem 0;
       opacity: 0.6;
-      position: relative;
-      z-index: 5;
-    }
-
-    /* SECTIONS */
-    .section {
-      position: relative;
-      z-index: 5;
-      max-width: 760px;
-      margin: 0 auto 2.5rem;
-      padding: 0 1.5rem;
-    }
-
-    .panel {
-      background: rgba(255,255,255,0.05);
-      border: 2px solid var(--neon-teal);
-      border-radius: 12px;
-      padding: 2rem;
-      box-shadow: 0 0 30px rgba(0,255,204,0.15), inset 0 0 20px rgba(0,255,204,0.03);
-      position: relative;
-      overflow: hidden;
-    }
-    .panel::before {
-      content: '';
-      position: absolute;
-      top: -50%; left: -50%;
-      width: 200%; height: 200%;
-      background: repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 10px,
-        rgba(0,255,204,0.02) 10px,
-        rgba(0,255,204,0.02) 11px
-      );
-      pointer-events: none;
-    }
-
-    .panel-title {
-      font-family: 'Permanent Marker', cursive;
-      font-size: 1.8rem;
-      color: var(--neon-pink);
-      text-shadow: 0 0 15px rgba(255,0,204,0.8);
-      margin-bottom: 1rem;
-    }
-
-    p {
-      line-height: 1.75;
-      font-size: 1.05rem;
-      color: rgba(240,248,255,0.9);
-    }
-
-    .highlight {
-      color: var(--neon-yellow);
-      font-family: 'Permanent Marker', cursive;
-      font-size: 1.15em;
-    }
-
-    .wiggle {
-      display: inline-block;
-      animation: wiggle 0.5s ease-in-out infinite alternate;
-    }
-    @keyframes wiggle {
-      from { transform: rotate(-3deg); }
-      to   { transform: rotate(3deg); }
     }
 
     /* REASONS LIST */
@@ -265,12 +482,14 @@
       list-style: none;
       margin-top: 1rem;
     }
+
     .reasons li {
       padding: 0.5rem 0;
-      border-bottom: 1px dashed rgba(0,255,204,0.2);
+      border-bottom: 1px dashed rgba(0, 255, 204, 0.2);
       font-size: 1rem;
       line-height: 1.6;
     }
+
     .reasons li::before {
       content: attr(data-icon);
       margin-right: 0.6rem;
@@ -286,31 +505,31 @@
       line-height: 1.5;
       padding: 1rem;
       border-left: 4px solid var(--neon-pink);
-      margin: 1rem 0;
+      margin: 0;
       animation: color-cycle 5s infinite alternate;
     }
+
     @keyframes color-cycle {
-      0%   { color: var(--neon-yellow); }
-      50%  { color: var(--neon-teal); }
-      100% { color: var(--neon-pink); }
+      0% {
+        color: var(--neon-yellow);
+      }
+
+      50% {
+        color: var(--neon-teal);
+      }
+
+      100% {
+        color: var(--neon-pink);
+      }
     }
+
     .testimonial-attr {
       font-family: 'Special Elite', cursive;
       font-size: 0.75rem;
-      color: rgba(240,248,255,0.5);
+      color: rgba(240, 248, 255, 0.5);
       display: block;
       margin-top: 0.5rem;
       letter-spacing: 0.2em;
-    }
-
-    /* BAKER CITY MAP DOODLE */
-    .map-section {
-      text-align: center;
-      font-size: 3rem;
-      line-height: 1.3;
-      position: relative;
-      z-index: 5;
-      margin: 1rem 0;
     }
 
     /* SCROLL TEXT */
@@ -326,18 +545,23 @@
       z-index: 5;
       margin: 0.5rem 0 1.5rem;
     }
+
     @keyframes bob {
-      from { transform: translateY(0); }
-      to   { transform: translateY(6px); }
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(6px);
+      }
     }
 
     /* CTA */
     .cta-wrap {
       text-align: center;
       margin: 2rem 0;
-      position: relative;
-      z-index: 5;
     }
+
     .cta-button {
       font-family: 'Permanent Marker', cursive;
       font-size: 1.6rem;
@@ -347,18 +571,61 @@
       border-radius: 50px;
       padding: 0.8rem 2.5rem;
       cursor: pointer;
-      box-shadow: 0 0 30px rgba(255,0,204,0.7), 0 4px 15px rgba(0,0,0,0.4);
+      box-shadow: 0 0 30px rgba(255, 0, 204, 0.7), 0 4px 15px rgba(0, 0, 0, 0.4);
       text-decoration: none;
       display: inline-block;
       animation: cta-pulse 1.5s ease-in-out infinite alternate;
       transition: transform 0.1s;
     }
+
     .cta-button:hover {
       transform: scale(1.05) rotate(-1deg);
     }
+
     @keyframes cta-pulse {
-      from { box-shadow: 0 0 20px rgba(255,0,204,0.5), 0 4px 15px rgba(0,0,0,0.4); }
-      to   { box-shadow: 0 0 50px rgba(255,0,204,1),   0 4px 15px rgba(0,0,0,0.4); }
+      from {
+        box-shadow: 0 0 20px rgba(255, 0, 204, 0.5), 0 4px 15px rgba(0, 0, 0, 0.4);
+      }
+
+      to {
+        box-shadow: 0 0 50px rgba(255, 0, 204, 1), 0 4px 15px rgba(0, 0, 0, 0.4);
+      }
+    }
+
+    /* ENTRY SEPARATOR */
+    .entry-separator {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 3rem 0;
+      opacity: 0.5;
+    }
+
+    .entry-separator::before,
+    .entry-separator::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--neon-pink), transparent);
+    }
+
+    .entry-separator span {
+      font-family: 'Permanent Marker', cursive;
+      color: var(--neon-pink);
+      font-size: 1.2rem;
+      white-space: nowrap;
+      letter-spacing: 0.2em;
+    }
+
+    /* OLDER ENTRIES label */
+    .older-label {
+      text-align: center;
+      font-family: 'Boogaloo', cursive;
+      font-size: 0.75rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: rgba(240, 248, 255, 0.2);
+      margin-bottom: 2rem;
     }
 
     /* FOOTER */
@@ -368,11 +635,15 @@
       text-align: center;
       padding: 2rem 1rem 3rem;
       font-size: 0.75rem;
-      color: rgba(240,248,255,0.3);
+      color: rgba(240, 248, 255, 0.3);
       letter-spacing: 0.15em;
       font-family: 'Boogaloo', cursive;
     }
-    footer p { font-size: 0.75rem; color: rgba(240,248,255,0.3); }
+
+    footer p {
+      font-size: 0.75rem;
+      color: rgba(240, 248, 255, 0.3);
+    }
 
     /* CORNER STICKERS */
     .sticker {
@@ -381,16 +652,33 @@
       z-index: 20;
       animation: spin-slow 8s linear infinite;
       pointer-events: none;
-      filter: drop-shadow(0 0 8px rgba(255,255,0,0.8));
+      filter: drop-shadow(0 0 8px rgba(255, 255, 0, 0.8));
     }
-    .sticker-tl { top: 10px;  left: 10px;  animation-direction: normal; }
-    .sticker-tr { top: 10px;  right: 10px; animation-direction: reverse; }
+
+    .sticker-tl {
+      top: 10px;
+      left: 10px;
+      animation-direction: normal;
+    }
+
+    .sticker-tr {
+      top: 10px;
+      right: 10px;
+      animation-direction: reverse;
+    }
+
     @keyframes spin-slow {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
     }
   </style>
 </head>
+
 <body>
 
   <!-- SPINNING CORNER STICKERS -->
@@ -403,207 +691,392 @@
   <!-- SNOWFLAKES -->
   <div id="snowflakes"></div>
 
+  <!-- ═════════════ OLD-SCHOOL NAV ═════════════ -->
+  <nav class="site-nav" aria-label="Blog navigation">
+    <span class="nav-title">POWDER RHYTHM</span>
+    <span class="nav-sep">|</span>
+    <a href="#circus" class="new-tag">The Circus Poster</a>
+    <span class="nav-sep">|</span>
+    <a href="#the-thing">The Thing</a>
+    <span class="nav-sep">|</span>
+    <a href="#why-good">Why It's Good</a>
+    <span class="nav-sep">|</span>
+    <a href="#letter">A Letter</a>
+    <span class="nav-sep">|</span>
+    <a href="#facts">Facts</a>
+  </nav>
+
   <!-- TOP MARQUEE -->
   <div class="marquee-wrap">
     <span class="marquee-inner">
-      ✦ POWDER RHYTHM ✦ BAKER CITY OREGON ✦ THIS IS GOING TO BE INCREDIBLE ✦ I CANNOT WAIT ✦ POWDER RHYTHM ✦ BAKER CITY OREGON ✦ THIS IS GOING TO BE INCREDIBLE ✦ I CANNOT WAIT ✦ POWDER RHYTHM ✦ BAKER CITY OREGON ✦ THIS IS GOING TO BE INCREDIBLE ✦ I CANNOT WAIT ✦
+      🐯 POWDER RHYTHM 🐯 BAKER CITY OREGON 🐯 SOMETHING IS HAPPENING 🐯 THERE WILL APPARENTLY BE TIGERS 🐯 POWDER
+      RHYTHM 🐯 BAKER CITY OREGON 🐯 SOMETHING IS HAPPENING 🐯 THERE WILL APPARENTLY BE TIGERS 🐯 POWDER RHYTHM 🐯 BAKER
+      CITY OREGON 🐯
     </span>
   </div>
 
   <!-- HEADER -->
   <header>
-    <div class="title-eyebrow">&#9733; COMING SOON &#9733;</div>
+    <div class="title-eyebrow">&#9733; DISPATCHES FROM BAKER CITY &#9733;</div>
     <h1 class="main-title">POWDER<br>RHYTHM</h1>
     <div class="subtitle">BAKER CITY, OREGON</div>
+    <div class="blog-tagline">something is happening here &bull; I'm documenting what I find &bull; stay with me</div>
   </header>
 
   <!-- MOUNTAIN EMOJI SCENE -->
-  <div class="mountain-scene">⛰️&nbsp;🎿&nbsp;❄️&nbsp;🌨️&nbsp;🏔️</div>
+  <div class="mountain-scene" style="position:relative;z-index:5;">⛰️&nbsp;🎿&nbsp;❄️&nbsp;🌨️&nbsp;🏔️</div>
 
   <!-- SCROLL TEXT -->
-  <div class="scroll-text">▼ scroll down you won't regret it ▼</div>
+  <div class="scroll-text">▼ newest stuff is at the top ▼</div>
 
-  <!-- COUNTDOWN -->
-  <div class="countdown-section">
-    <div class="countdown-label">✦ the excitement is building ✦</div>
-    <div class="countdown-boxes">
-      <div class="countdown-box">
-        <span class="num" id="cd-days">—</span>
-        <span class="lbl">days</span>
+  <!-- ═════════════════════════════════════════
+       BLOG FEED
+  ═════════════════════════════════════════ -->
+  <div class="blog-feed">
+
+    <!-- ══════════════════════════════════════
+         ENTRY: THE CIRCUS POSTER
+    ══════════════════════════════════════ -->
+    <article class="entry" id="circus">
+      <div class="entry-header">
+        <span class="entry-date">April 12, 2026</span>
+        <div class="entry-rule"></div>
+        <span class="entry-tag">NEW</span>
       </div>
-      <div class="countdown-box">
-        <span class="num" id="cd-hours">—</span>
-        <span class="lbl">hours</span>
+
+      <!-- POSTER -->
+      <div class="poster-frame">
+        <img src="1000002317.jpg" alt="A poster. Definitely a circus poster. There are tigers." id="the-poster">
+        <p class="poster-caption">exhibit A. the poster in question</p>
       </div>
-      <div class="countdown-box">
-        <span class="num" id="cd-mins">—</span>
-        <span class="lbl">minutes</span>
+
+      <!-- COUNTDOWN (for whatever this is, May 29) -->
+      <div class="countdown-section">
+        <div class="countdown-label">✦ total time spent in a state of high anticipation ✦</div>
+        <div class="countdown-boxes">
+          <div class="countdown-box">
+            <span class="num" id="cd-days">00</span>
+            <span class="lbl">days</span>
+          </div>
+          <div class="countdown-box">
+            <span class="num" id="cd-hours">00</span>
+            <span class="lbl">hours</span>
+          </div>
+          <div class="countdown-box">
+            <span class="num" id="cd-mins">—</span>
+            <span class="lbl">minutes</span>
+          </div>
+          <div class="countdown-box">
+            <span class="num" id="cd-secs">—</span>
+            <span class="lbl">seconds</span>
+          </div>
+        </div>
+        <div
+          style="margin-top:0.6rem; font-family:'Boogaloo',cursive; font-size:0.8rem; color:rgba(240,248,255,0.35); letter-spacing:0.2em;">
+          SINCE APRIL 2 · WHEN I FIRST HEARD THE NAME</div>
       </div>
-      <div class="countdown-box">
-        <span class="num" id="cd-secs">—</span>
-        <span class="lbl">seconds</span>
+
+      <div class="section">
+        <div class="panel">
+          <div class="panel-title">A Poster. Two Tigers. A Dome.</div>
+          <p>
+            Saw a poster for a circus behind the bakery this morning on Resort.
+            I think it's for a circus.
+          </p>
+          <p style="margin-top:1rem;">
+            It says some words I understand and some words I'm still putting together.
+            There's something called a <span class="highlight">Utility Roller Dome</span>,
+            which, okay. I'm not entirely sure what that is. A dome? That has something
+            to do with rolling? Or a utility space that is, itself, dome-shaped? A dome
+            for utilities? It could be any of these. It's a <em>dome</em> and that is
+            genuinely all I need to know.
+          </p>
+          <p style="margin-top:1rem;">
+            There's also something called an <span class="highlight">Afterschool Special</span>,
+            which I believe is a circus act. I think I've seen them before, like on TV when I was a kid.
+            For children, probably, or for adults who still feel something shift in their
+            chest when they see a really good performance. Which is me. And I suspect
+            most people, if they're being honest about it. I hope whatever it is, is like that.
+          </p>
+          <p style="margin-top:1rem;">
+            It says <span class="highlight">Grand Opening Party</span> so this circus is
+            opening. The grand is opening. Something is beginning. Something big.
+            Something, and I want to be precise here,
+            <span class="highlight wiggle">dome-shaped</span>.
+          </p>
+          <p style="margin-top:1rem;">
+            But here's the thing. Here is the thing. The thing is this:
+          </p>
+          <p
+            style="margin-top:1rem; font-family:'Permanent Marker',cursive; font-size:1.3rem; color:var(--neon-yellow); text-shadow: 0 0 10px rgba(255,255,0,0.5); line-height:1.5;">
+            There are two tigers on this poster.
+          </p>
+          <p style="margin-top:1rem;">
+            Two of them. Roaring. Pink. Blue eyes. They're standing in front of the
+            kind of pattern that, if you look at it long enough, starts to breathe a little.
+            And they are looking directly at me like they have
+            something important to communicate and what they are communicating is:
+            <em>"We will be there. On May 29th. In the Dome. Come and find us."</em>
+          </p>
+          <p style="margin-top:1rem;">
+            I haven't seen a tiger since I was a child. I think it was at a zoo.
+            Or possibly it was a vision. I'm not totally sure anymore. Memory is a
+            strange thing, time is a strange thing, tigers are a strange and beautiful
+            thing. What I do know is that the feeling I had then, that feeling of
+            <em>oh, something magnificent exists in the world</em>... that is the exact feeling
+            I am having right now looking at this poster.
+          </p>
+          <p style="margin-top:1rem;">
+            It says <span class="highlight">May 29th</span>. It says
+            <span class="highlight">Baker City</span>. It says something about
+            six o'clock and seven o'clock and some numbers that I believe are the
+            cost of admission to see what is almost certainly a glorious circus
+            happening at a dome that rolls or is a dome for rolling or is simply
+            a dome, majestic and round, in Oregon.
+          </p>
+          <p style="margin-top:1rem;">
+            I will be there. I will see the tigers. I have never been more sure of
+            anything in my life. I don't fully understand what an ADV is but I will
+            figure it out because the tigers are waiting and the dome is opening
+            and Powder Rhythm is involved somehow and all of that together means
+            this is where I need to be.
+          </p>
+          <p
+            style="margin-top:1.2rem; font-family:'Permanent Marker', cursive; font-size:1rem; color:var(--neon-teal);">
+            May 29th. The circus is coming to Baker City.<br>
+            Or Baker City has always been the circus and this is just the<br>
+            first time someone put up a poster about it.<br>
+            Both of these feel true.
+          </p>
+        </div>
       </div>
+
+      <div class="section">
+        <div class="testimonial">
+          "I don't know exactly what is happening<br>on May 29th but there will be<br>two tigers and a dome<br>and that
+          is enough for me."
+          <span class="testimonial-attr">— me, right now, about the poster</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- ══════════════════════════════════════
+         SEPARATOR
+    ══════════════════════════════════════ -->
+    <div class="entry-separator">
+      <span>earlier entries</span>
     </div>
-    <div style="margin-top:0.6rem; font-family:'Boogaloo',cursive; font-size:0.8rem; color:rgba(240,248,255,0.35); letter-spacing:0.2em;">SINCE I FIRST HEARD ABOUT IT</div>
-  </div>
+    <p class="older-label">↓ &nbsp; previously on this blog &nbsp; ↓</p>
 
-  <div class="divider">— ✦ —</div>
+    <!-- ══════════════════════════════════════
+         ENTRY: THE ORIGINAL — OKAY SO HERE'S THE THING
+    ══════════════════════════════════════ -->
+    <article class="entry" id="the-thing">
+      <div class="entry-header">
+        <span class="entry-date">April 2, 2026</span>
+        <div class="entry-rule"></div>
+        <span class="entry-tag">origin</span>
+      </div>
 
-  <!-- SECTION 1 -->
-  <div class="section">
-    <div class="panel">
-      <div class="panel-title">Okay So Here's the Thing.</div>
-      <p>
-        I don't normally get like this. I'm a pretty chill person. I drink herbal tea.
-        I own multiple fleeces. But when I heard about
-        <span class="highlight">Powder Rhythm</span> happening in
-        <span class="highlight">Baker City</span>, something inside me — something
-        primal and ancient and possibly also a little dramatic — woke up and said:
-        <em>"Oh. OH. This is it."</em>
-      </p>
-      <p style="margin-top:1rem;">
-        Baker City, Oregon. Population: <span class="highlight">small enough to feel like
-        everyone's a neighbor</span>. Surrounded by: <span class="highlight">mountains that
-        absolutely do not mess around</span>. Known for: <span class="highlight">vibes,
-        history, and the kind of sky that makes you feel like a tiny miracle</span>.
-      </p>
-      <p style="margin-top:1rem;">
-        And now: <span class="highlight wiggle">Powder Rhythm</span>.
-        Snow. Cold air. Rhythm. <em>Baker.</em> I'm already packing.
-      </p>
-    </div>
-  </div>
+      <div class="section">
+        <div class="panel">
+          <div class="panel-title">Something Is About to Happen Here.</div>
+          <p>
+            I live in Baker City. I've been here a while now. I know the sounds this
+            town makes. The way the wind comes down through the Elkhorns in the morning,
+            the particular quiet of Main Street at dusk. I know what normal feels like here.
+            And something has shifted. I can't explain it exactly, but I heard a name,
+            <span class="highlight">Powder Rhythm</span>, and it landed in me the way
+            a tuning fork lands. Like the air changed frequency.
+          </p>
+          <p style="margin-top:1rem;">
+            I don't know what it is yet. Something to do with powder. Snow, maybe? The
+            Elkhorns get incredible snow. And rhythm... music? A heartbeat? The way your
+            boots sound on packed trail? It could be any of these things and the
+            uncertainty is part of what's making me feel so alive about it.
+          </p>
+          <p style="margin-top:1rem;">
+            Baker City, Oregon. Population: <span class="highlight">small enough that
+              you can feel the whole town's mood shift when something new arrives</span>.
+            Mountains: <span class="highlight">so close they're basically a roommate</span>.
+            Sky: <span class="highlight">the kind that makes your coffee taste better
+              just because you're drinking it outside underneath it</span>.
+          </p>
+          <p style="margin-top:1rem;">
+            And now, apparently: <span class="highlight wiggle">Powder Rhythm</span>.
+            Whatever it is, it's here. Or it's coming. And I intend to be paying
+            very close attention.
+          </p>
+        </div>
+      </div>
 
-  <!-- TESTIMONIAL -->
-  <div class="section">
-    <div class="testimonial">
-      "I literally called my mom about this.<br>She didn't fully understand<br>but she said it sounded neat.<br>It is going to be SO MUCH MORE THAN NEAT."
-      <span class="testimonial-attr">— Me, approximately 47 times since I heard about it</span>
-    </div>
-  </div>
+      <div class="section">
+        <div class="testimonial">
+          "I told my neighbor about it<br>and she asked what it was<br>and I said I didn't know yet<br>and she said that
+          was a weird thing to be excited about<br>and she's not wrong but she's also not right."
+          <span class="testimonial-attr">— a conversation I had on my porch last Tuesday</span>
+        </div>
+      </div>
 
-  <!-- SECTION 2 -->
-  <div class="section">
-    <div class="panel">
-      <div class="panel-title">Why It's Gonna Be So Good (A List)</div>
-      <ul class="reasons">
-        <li data-icon="🏔️">Baker City sits in the middle of nowhere in the best possible way — which means the stars at night will rearrange your entire personality.</li>
-        <li data-icon="❄️">The word "powder" is right there in the name. Powder. P-O-W-D-E-R. That's the good stuff. That's fresh snow. Cold and fluffy and oh my goodness.</li>
-        <li data-icon="🌊">The word "rhythm" is also right there. Rhythm. The pulse of something. The cadence of a perfect run down a slope. Your heart agreeing with the mountain.</li>
-        <li data-icon="✨">Powder <em>plus</em> Rhythm is not just addition. It is a chemical reaction. A phenomenon. Science hasn't caught up yet but it will.</li>
-        <li data-icon="🌄">Eastern Oregon sunrises hit different. You'll cry a little. It's fine. We're all going to cry a little.</li>
-        <li data-icon="🦅">There are probably eagles. I don't know this for a fact but I feel it in my bones and I'm choosing to believe.</li>
-        <li data-icon="🍺">Local craft beer? Almost certainly. Hot cocoa? Definitely. Soup? I am manifesting soup.</li>
-        <li data-icon="🤙">The energy of a place where everyone came specifically because they wanted to be there? Unmatched. Undefeated. No notes.</li>
-      </ul>
-    </div>
-  </div>
+      <div class="section" id="why-good">
+        <div class="panel">
+          <div class="panel-title">Things I Keep Thinking About (A List)</div>
+          <ul class="reasons">
+            <li data-icon="🏔️">Baker City sits in the kind of geography that makes you reconsider what you've been
+              doing with your time. The stars here at night are unreasonable. They make you quiet in a way that feels
+              important.</li>
+            <li data-icon="❄️">The word "powder" is right there in the name. Powder. P-O-W-D-E-R. That's fresh snow on a
+              still morning. The sound your skis make when the mountain is being generous.</li>
+            <li data-icon="🌊">The word "rhythm" is also right there. The pulse of something. The cadence of a good run.
+              The way your heartbeat lines up with the slope when everything is working. Your body agreeing with the
+              mountain.</li>
+            <li data-icon="✨">Powder <em>plus</em> Rhythm is not just two words next to each other. Something happens
+              when you put them together. Like a chord. Each note is fine alone, but together they become a thing that
+              didn't exist before.</li>
+            <li data-icon="🌄">Eastern Oregon sunrises do something to the inside of your chest. It's not sadness
+              exactly. It's more like being suddenly aware that you're alive and that the light is doing something it
+              will never do again in exactly this way.</li>
+            <li data-icon="🦅">There are eagles here. I've seen them. They're not relevant to Powder Rhythm specifically
+              but they feel like part of the same sentence, if that makes sense.</li>
+            <li data-icon="🍺">Baker City has good beer. It will almost certainly have hot cocoa. I have a very strong
+              feeling there will be soup at some point and I'm looking forward to it more than I should probably admit.
+            </li>
+            <li data-icon="🤙">The energy of a room. Or a dome, or a field, or whatever this turns out to be. Full of
+              people who specifically chose to be there. That's the good stuff. That's the whole thing.</li>
+          </ul>
+        </div>
+      </div>
 
-  <div class="divider">— ✦ —</div>
+      <div class="divider">— ✦ —</div>
 
-  <!-- MAP DOODLE -->
-  <div class="section" style="text-align:center;">
-    <div class="panel-title" style="text-align:center; font-family:'Permanent Marker',cursive; font-size:1.8rem; color:var(--neon-pink); text-shadow: 0 0 15px rgba(255,0,204,0.8); margin-bottom:1rem;">You Are Here (Spiritually)</div>
-    <div style="font-family:'Special Elite',cursive; font-size:0.85rem; color:rgba(240,248,255,0.5); letter-spacing:0.2em; margin-bottom:1rem;">A HIGHLY ACCURATE MAP OF THE SITUATION</div>
-    <pre style="font-family:'Courier New',monospace; font-size:0.75rem; line-height:1.6; color:var(--neon-teal); text-align:left; display:inline-block; background:rgba(0,255,204,0.04); padding:1.5rem; border-radius:8px; border:1px dashed rgba(0,255,204,0.2);">
-       [THE REST OF THE WORLD]
+      <!-- MAP DOODLE -->
+      <div class="section" style="text-align:center;">
+        <div class="panel-title"
+          style="text-align:center; font-family:'Permanent Marker',cursive; font-size:1.8rem; color:var(--neon-pink); text-shadow: 0 0 15px rgba(255,0,204,0.8); margin-bottom:1rem;">
+          Where We Are (Geographically and Otherwise)</div>
+        <div
+          style="font-family:'Special Elite',cursive; font-size:0.85rem; color:rgba(240,248,255,0.5); letter-spacing:0.2em; margin-bottom:1rem;">
+          A REASONABLY ACCURATE MAP OF THE SITUATION</div>
+        <pre
+          style="font-family:'Courier New',monospace; font-size:0.75rem; line-height:1.6; color:var(--neon-teal); text-align:left; display:inline-block; background:rgba(0,255,204,0.04); padding:1.5rem; border-radius:8px; border:1px dashed rgba(0,255,204,0.2);">
+       [everywhere else]
               ↓
-         (boring, whatever)
+      (fine, probably, I guess)
               ↓
        OREGON 🌲🌲🌲🌲🌲
               ↓
       Eastern Oregon 🏔️🏔️
               ↓
        ★ BAKER CITY ★
-        ↗ you want to be here
-       ↑
-    [you, right now, excited]
-    </pre>
-  </div>
+        ↗ I live here
+        ↑
+      something is coming
+        </pre>
+      </div>
 
-  <!-- SECTION 3 -->
-  <div class="section" style="margin-top:1.5rem;">
-    <div class="panel">
-      <div class="panel-title">A Message From My Heart to Powder Rhythm</div>
-      <p>
-        Dear Powder Rhythm,
-      </p>
-      <p style="margin-top:0.8rem;">
-        I don't know your exact dates. I don't know the full schedule. I don't know the
-        parking situation and honestly that is fine because some things transcend logistics.
-        What I <em>do</em> know is that you exist somewhere in the future, in Baker City,
-        and that you are going to be <span class="highlight">spectacular</span>.
-      </p>
-      <p style="margin-top:0.8rem;">
-        I have already mentally packed my bag three times. Once I packed wrong and brought
-        only sunscreen and a snow gauge. But I am learning. I am growing. I am
-        <span class="highlight">so ready for you</span>.
-      </p>
-      <p style="margin-top:0.8rem;">
-        There will be moments. You know the kind. Where the cold air
-        hits and the snow is perfect and the mountains are just <em>standing there being mountains</em> and you
-        look around and think: <span class="highlight">"Yes. This is exactly where I am
-        supposed to be."</span>
-      </p>
-      <p style="margin-top:0.8rem;">
-        That's going to happen at Powder Rhythm. I'm calling it now. I'm locking it in.
-        I am manifesting it with my whole entire situation.
-      </p>
-      <p style="margin-top:1rem; text-align:right;">
-        Yours enthusiastically and somewhat unreasonably,<br>
-        <span class="highlight">A Very Excited Person</span>
-      </p>
-    </div>
-  </div>
+      <!-- SECTION 3 -->
+      <div class="section" id="letter" style="margin-top:1.5rem;">
+        <div class="panel">
+          <div class="panel-title">An Open Letter to Whatever Powder Rhythm Is</div>
+          <p>
+            Dear Powder Rhythm,
+          </p>
+          <p style="margin-top:0.8rem;">
+            I don't know what you are yet. I've heard the name a few times now.
+            at the grocery store, at the trailhead, someone mentioned it at the bar
+            last week and then changed the subject when I asked questions. Which only
+            made me more interested. You exist somewhere in the near future,
+            in my town, and I believe you are going to be
+            <span class="highlight">something worth paying attention to</span>.
+          </p>
+          <p style="margin-top:0.8rem;">
+            I have already mentally packed a bag for whatever you turn out to be.
+            The first time I packed wrong. Brought only base layers and a field guide.
+            The second time was just snacks. I'm refining the process.
+          </p>
+          <p style="margin-top:0.8rem;">
+            There will be moments. I can feel it. The kind where the cold air
+            lands on your face and the mountains are just <em>standing there being
+              mountains</em> and you look around at the people near you and everybody
+            has the same quiet expression that means:
+            <span class="highlight">"Yes. This is exactly the right place."</span>
+          </p>
+          <p style="margin-top:0.8rem;">
+            That's going to happen at Powder Rhythm. I don't know how I know this.
+            I just do. The name alone has that quality. Like it was waiting for
+            Baker City to be ready for it, or Baker City was waiting for something
+            with exactly this name.
+          </p>
+          <p style="margin-top:1rem; text-align:right;">
+            Yours, with a great deal of unearned certainty,<br>
+            <span class="highlight">A Resident</span>
+          </p>
+        </div>
+      </div>
 
-  <!-- SECOND TESTIMONIAL -->
-  <div class="section">
-    <div class="testimonial">
-      "Baker City + snow + powder<br>= an equation my calculator<br>says equals AMAZING."
-      <span class="testimonial-attr">— A calculator I made up just now</span>
-    </div>
-  </div>
+      <!-- SECOND TESTIMONIAL -->
+      <div class="section">
+        <div class="testimonial">
+          "I tried to explain Powder Rhythm<br>to someone passing through town<br>and they asked what it was<br>and I
+          said I'd get back to them<br>but I said it with so much confidence<br>that they seemed impressed."
+          <span class="testimonial-attr">— me, at the gas station, last week</span>
+        </div>
+      </div>
 
-  <!-- FINAL HYPE SECTION -->
-  <div class="section">
-    <div class="panel">
-      <div class="panel-title">Facts (All True, Some Discovered Just Now)</div>
-      <p>
-        ✦ Baker City sits at 3,449 feet elevation. That's high enough that every breath
-        feels like a reward.<br><br>
-        ✦ The Elkhorn Mountains are right there. Like, <em>right there</em>. The kind
-        of close where you look up from your coffee and you go "oh wow" and then you
-        look at the mountains again immediately.<br><br>
-        ✦ Oregon is one of those states where the people who love it <em>really</em>
-        love it, and they're right to, and Powder Rhythm is going to be full of exactly
-        those people and also me.<br><br>
-        ✦ The combination of fresh powder and a reason to gather in a small mountain town is literally the
-        plot of my favorite movie that doesn't exist yet but should.<br><br>
-        ✦ I have been to Baker City before. I already know it slaps. This is not new
-        information to Baker City. Baker City has always known this about itself.
-      </p>
-    </div>
-  </div>
+      <!-- FINAL HYPE SECTION -->
+      <div class="section" id="facts">
+        <div class="panel">
+          <div class="panel-title">Things That Are True About This Place</div>
+          <p>
+            ✦ Baker City sits at 3,449 feet. High enough that the air has a different
+            texture. You notice it in your lungs, in the way sound carries, in how the
+            stars seem closer than they have any right to be.<br><br>
+            ✦ The Elkhorn Mountains are right there. Like, <em>right there</em>. The kind
+            of close where you look up from your coffee and there they are and you look
+            back down at your coffee and then you look back up at them again because you
+            just can't help it.<br><br>
+            ✦ Eastern Oregon is the kind of place that doesn't explain itself to you.
+            You have to come here and then it makes sense all at once, like a word
+            you've been trying to remember.<br><br>
+            ✦ The combination of fresh powder and a reason to gather in a small mountain
+            town is the plot of my favorite movie that doesn't exist yet but absolutely
+            should.<br><br>
+            ✦ I live in Baker City. I chose to live here on purpose. Baker City didn't
+            need me to validate it. It has the Elkhorns for that. But I'm glad I'm
+            here for whatever is about to happen.
+          </p>
+        </div>
+      </div>
 
-  <!-- CTA -->
-  <div class="cta-wrap">
-    <p style="font-family:'Boogaloo',cursive; font-size:1rem; letter-spacing:0.2em; color:var(--neon-teal); margin-bottom:1rem; text-transform:uppercase;">are you excited yet?? you should be</p>
-    <a class="cta-button" href="#" onclick="alert('Powder Rhythm. Baker City. It\'s going to be so good. I just needed you to know that. Scroll back up. Read it again.'); return false;">
-      I AM ALSO EXCITED
-    </a>
-  </div>
+      <!-- CTA -->
+      <div class="cta-wrap">
+        <p
+          style="font-family:'Boogaloo',cursive; font-size:1rem; letter-spacing:0.2em; color:var(--neon-teal); margin-bottom:1rem; text-transform:uppercase;">
+          if any of this resonates with you</p>
+        <a class="cta-button" href="#"
+          onclick="alert('Powder Rhythm. Baker City. Something is coming. I don\'t know what it is but I know where I\'ll be. Scroll back up. Read the whole thing again. It gets better the second time.'); return false;"
+          id="excited-btn">
+          I FEEL IT TOO
+        </a>
+      </div>
+    </article>
+
+  </div><!-- /blog-feed -->
 
   <!-- BOTTOM MARQUEE -->
   <div class="marquee-wrap" style="background: #00ccaa; color: #001a10; margin-top:2rem;">
     <span class="marquee-inner" style="animation-duration:25s; animation-direction:reverse;">
-      ❄️ POWDER RHYTHM ❄️ BAKER CITY ❄️ EASTERN OREGON ❄️ MOUNTAINS ❄️ FRESH POWDER ❄️ SO EXCITED ❄️ CANNOT WAIT ❄️ IT'S GOING TO BE AMAZING ❄️ POWDER RHYTHM ❄️ BAKER CITY ❄️ EASTERN OREGON ❄️ MOUNTAINS ❄️ FRESH POWDER ❄️ SO EXCITED ❄️ CANNOT WAIT ❄️ IT'S GOING TO BE AMAZING ❄️
+      ❄️ POWDER RHYTHM ❄️ BAKER CITY ❄️ EASTERN OREGON ❄️ MOUNTAINS ❄️ FRESH POWDER ❄️ SO EXCITED ❄️ CANNOT WAIT ❄️ IT'S
+      GOING TO BE AMAZING ❄️ POSSIBLE TIGERS ❄️ POWDER RHYTHM ❄️ BAKER CITY ❄️ EASTERN OREGON ❄️ MOUNTAINS ❄️ FRESH
+      POWDER ❄️ SO EXCITED ❄️ CANNOT WAIT ❄️ IT'S GOING TO BE AMAZING ❄️ POSSIBLE TIGERS ❄️
     </span>
   </div>
 
   <!-- FOOTER -->
   <footer>
-    <p>POWDER RHYTHM &bull; BAKER CITY, OREGON &bull; IT'S GOING TO BE AMAZING</p>
-    <p style="margin-top:0.5rem;">made with an unreasonable amount of enthusiasm &bull; no mountains were harmed</p>
+    <p>POWDER RHYTHM &bull; BAKER CITY, OREGON &bull; A BLOG &bull; UPDATES FORTHCOMING</p>
+    <p style="margin-top:0.5rem;">made with an unreasonable amount of enthusiasm &bull; tigers not confirmed but
+      strongly suspected</p>
   </footer>
 
   <script>
@@ -615,10 +1088,10 @@
       const size = Math.random() * 2.5 + 0.5;
       s.style.cssText = `
         width:${size}px; height:${size}px;
-        top:${Math.random()*100}%;
-        left:${Math.random()*100}%;
-        --dur:${(Math.random()*3+1).toFixed(1)}s;
-        animation-delay:${(Math.random()*4).toFixed(1)}s;
+        top:${Math.random() * 100}%;
+        left:${Math.random() * 100}%;
+        --dur:${(Math.random() * 3 + 1).toFixed(1)}s;
+        animation-delay:${(Math.random() * 4).toFixed(1)}s;
       `;
       starsEl.appendChild(s);
     }
@@ -632,32 +1105,35 @@
       f.textContent = flakes[Math.floor(Math.random() * flakes.length)];
       const dur = (Math.random() * 10 + 8).toFixed(1);
       f.style.cssText = `
-        left:${Math.random()*100}%;
-        font-size:${(Math.random()*1+0.6).toFixed(1)}em;
+        left:${Math.random() * 100}%;
+        font-size:${(Math.random() * 1 + 0.6).toFixed(1)}em;
         animation-duration:${dur}s;
-        animation-delay:${(Math.random()*10).toFixed(1)}s;
-        opacity:${(Math.random()*0.5+0.3).toFixed(2)};
+        animation-delay:${(Math.random() * 10).toFixed(1)}s;
+        opacity:${(Math.random() * 0.5 + 0.3).toFixed(2)};
       `;
       snowEl.appendChild(f);
     }
 
-    // COUNTDOWN — counting up from the moment I heard about it
-    // (set an arbitrary "heard about it" date — April 1, 2026)
-    const heardAbout = new Date('2026-04-01T00:00:00');
-    function updateCountdown() {
+    // COUNT UP from April 2, 2026 00:00:00
+    const startDate = new Date('2026-04-02T00:00:00');
+
+    function updateCounter() {
       const now = new Date();
-      let diff = Math.abs(now - heardAbout);
-      const days  = Math.floor(diff / 86400000); diff -= days * 86400000;
-      const hours = Math.floor(diff / 3600000);  diff -= hours * 3600000;
-      const mins  = Math.floor(diff / 60000);    diff -= mins * 60000;
-      const secs  = Math.floor(diff / 1000);
-      document.getElementById('cd-days').textContent  = String(days).padStart(2,'0');
-      document.getElementById('cd-hours').textContent = String(hours).padStart(2,'0');
-      document.getElementById('cd-mins').textContent  = String(mins).padStart(2,'0');
-      document.getElementById('cd-secs').textContent  = String(secs).padStart(2,'0');
+      let diff = Math.abs(now - startDate);
+
+      const days = Math.floor(diff / 86400000); diff -= days * 86400000;
+      const hours = Math.floor(diff / 3600000); diff -= hours * 3600000;
+      const mins = Math.floor(diff / 60000); diff -= mins * 60000;
+      const secs = Math.floor(diff / 1000);
+
+      document.getElementById('cd-days').textContent = String(days).padStart(2, '0');
+      document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('cd-mins').textContent = String(mins).padStart(2, '0');
+      document.getElementById('cd-secs').textContent = String(secs).padStart(2, '0');
     }
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
+    updateCounter();
+    setInterval(updateCounter, 1000);
   </script>
 </body>
+
 </html>
