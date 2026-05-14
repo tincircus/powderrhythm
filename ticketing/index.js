@@ -12,8 +12,22 @@ const PORT = process.env.PORT || 3000;
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src/views'));
 
-app.use(express.json());
+app.use(express.json({
+  verify: (req, _res, buf) => {
+    // Capture raw body string for Square webhook HMAC verification (SEC-01)
+    // All routes get this; only webhooks.js uses req.rawBody
+    req.rawBody = buf.toString('utf8');
+  },
+}));
 app.use(express.urlencoded({ extended: false }));
+
+const eventsRouter   = require('./src/routes/events');   // GET /, POST /checkout
+const webhooksRouter = require('./src/routes/webhooks'); // POST /webhooks/square
+const ticketsRouter  = require('./src/routes/tickets');  // GET /ticket/pending, GET /api/ticket-status
+
+app.use('/webhooks', webhooksRouter);  // mount before '/' to avoid catch-all match issues
+app.use('/', eventsRouter);
+app.use('/', ticketsRouter);
 
 // GET /health — DB connectivity check
 app.get('/health', async (req, res) => {
