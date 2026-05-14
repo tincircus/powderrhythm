@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Error — Powder Rhythm Tickets</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Fredoka+One&family=Permanent+Marker&family=Special+Elite&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+        --deep-purple: #1a0033;
+        --neon-teal:   #00ffcc;
+        --neon-pink:   #ff00cc;
+        --neon-yellow: #ffff00;
+        --hot-pink:    #ff4da6;
+        --snow-white:  #f0f8ff;
+    }
+
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: var(--deep-purple);
+        background-image:
+            radial-gradient(ellipse at 20% 50%, rgba(0, 255, 204, 0.08) 0%, transparent 60%),
+            radial-gradient(ellipse at 80% 20%, rgba(255, 0, 204, 0.08) 0%, transparent 60%);
+        color: var(--snow-white);
+        font-family: 'Special Elite', cursive;
+        margin: 0;
+        padding: 48px 16px 64px;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .page-wrapper {
+        max-width: 480px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .error-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid var(--neon-pink);
+        border-radius: 12px;
+        padding: 32px 24px;
+    }
+
+    .error-heading {
+        font-family: 'Permanent Marker', cursive;
+        font-size: clamp(1.5rem, 6vw, 2.5rem);
+        line-height: 1.1;
+        color: var(--neon-pink);
+        margin: 0 0 24px;
+    }
+
+    .error-message {
+        font-family: 'Special Elite', cursive;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: var(--snow-white);
+        margin: 0 0 32px;
+    }
+
+    .back-link {
+        display: inline-block;
+        font-family: 'Boogaloo', sans-serif;
+        font-size: 1rem;
+        color: var(--neon-teal);
+        text-decoration: none;
+        border: 2px solid var(--neon-teal);
+        border-radius: 8px;
+        padding: 8px 24px;
+        min-height: 44px;
+        line-height: 26px;
+        transition: background 0.15s, box-shadow 0.15s;
+    }
+
+    .back-link:hover {
+        background: rgba(0, 255, 204, 0.1);
+        box-shadow: 0 0 12px rgba(0, 255, 204, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+    <div class="error-card">
+      <h1 class="error-heading">Something went wrong</h1>
+      <p class="error-message"><%= message %></p>
+      <a href="/" class="back-link">Go back</a>
+    </div>
+  </div>
+</body>
+</html>
