@@ -1,0 +1,23 @@
+{
+  "name": "powderrhythm-ticketing",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "12.10.0",
+    "dotenv": "17.4.2",
+    "ejs": "5.0.2",
+    "express": "5.2.1",
+    "knex": "3.2.10",
+    "pg": "8.20.0"
+  },
+  "devDependencies": {
+    "nodemon": "3.1.14"
+  }
+}
