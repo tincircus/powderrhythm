@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= event.name %> — Powder Rhythm Tickets</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Fredoka+One&family=Permanent+Marker&family=Special+Elite&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+        --deep-purple: #1a0033;
+        --neon-teal:   #00ffcc;
+        --neon-pink:   #ff00cc;
+        --neon-yellow: #ffff00;
+        --hot-pink:    #ff4da6;
+        --snow-white:  #f0f8ff;
+    }
+
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: var(--deep-purple);
+        background-image:
+            radial-gradient(ellipse at 20% 50%, rgba(0, 255, 204, 0.08) 0%, transparent 60%),
+            radial-gradient(ellipse at 80% 20%, rgba(255, 0, 204, 0.08) 0%, transparent 60%);
+        color: var(--snow-white);
+        font-family: 'Special Elite', cursive;
+        margin: 0;
+        padding: 48px 16px 64px;
+        min-height: 100vh;
+    }
+
+    .page-wrapper {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* Concert poster block — WHO → WHEN → WHERE → PRICE (D-11) */
+    .poster-block {
+        text-align: center;
+        margin-bottom: 32px;
+    }
+
+    .event-name {
+        font-family: 'Permanent Marker', cursive;
+        font-size: clamp(2rem, 10vw, 5rem);
+        line-height: 1.1;
+        color: var(--snow-white);
+        margin: 0 0 16px;
+        text-shadow: 0 0 20px rgba(255, 77, 166, 0.4);
+    }
+
+    .event-date {
+        font-family: 'Fredoka One', cursive;
+        font-size: 1.5rem;
+        line-height: 1.2;
+        color: var(--snow-white);
+        margin: 0 0 8px;
+    }
+
+    .event-venue {
+        font-family: 'Fredoka One', cursive;
+        font-size: 1rem;
+        line-height: 1.2;
+        color: var(--neon-teal);
+        margin: 0 0 16px;
+    }
+
+    .event-price {
+        font-family: 'Fredoka One', cursive;
+        font-size: 1.5rem;
+        line-height: 1.2;
+        color: var(--neon-yellow);
+        margin: 0 0 16px;
+    }
+
+    /* Capacity badge (D-12) */
+    .capacity-badge {
+        font-family: 'Boogaloo', sans-serif;
+        font-size: 0.85rem;
+        line-height: 1.3;
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .capacity-badge.available { color: var(--neon-teal); }
+    .capacity-badge.limited   { color: var(--neon-yellow); }
+    .capacity-badge.a-few-left { color: var(--hot-pink); }
+    .capacity-badge.almost-gone { color: var(--neon-pink); }
+    .capacity-badge.sold-out {
+        color: var(--neon-pink);
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    /* Buy form card — panel style (matches .panel from blog) */
+    .buy-form-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid var(--neon-teal);
+        border-radius: 12px;
+        padding: 24px;
+        margin-top: 32px;
+    }
+
+    .form-group {
+        margin-bottom: 16px;
+    }
+
+    .form-group label {
+        display: block;
+        font-family: 'Special Elite', cursive;
+        font-size: 1rem;
+        color: var(--snow-white);
+        margin-bottom: 8px;
+    }
+
+    input[type="text"],
+    input[type="email"] {
+        background: rgba(255, 255, 255, 0.07);
+        border: 2px solid var(--neon-teal);
+        border-radius: 8px;
+        color: var(--snow-white);
+        font-family: 'Special Elite', cursive;
+        font-size: 1rem;
+        padding: 8px 16px;
+        width: 100%;
+        min-height: 44px;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus {
+        outline: 3px solid var(--neon-teal);
+        outline-offset: 4px;
+    }
+
+    input[type="text"]:disabled,
+    input[type="email"]:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        border-color: rgba(0, 255, 204, 0.3);
+    }
+
+    .email-hint {
+        font-family: 'Special Elite', cursive;
+        font-size: 0.85rem;
+        color: rgba(240, 248, 255, 0.6);
+        margin-top: 4px;
+    }
+
+    button[type="submit"] {
+        background: transparent;
+        border: 2px solid var(--neon-teal);
+        border-radius: 8px;
+        color: var(--neon-teal);
+        font-family: 'Fredoka One', cursive;
+        font-size: 1.5rem;
+        padding: 8px 32px;
+        min-height: 44px;
+        width: 100%;
+        text-shadow: 0 0 8px rgba(0, 255, 204, 0.6);
+        box-shadow: 0 0 12px rgba(0, 255, 204, 0.2);
+        cursor: pointer;
+        transition: box-shadow 0.15s, background 0.15s;
+        margin-top: 8px;
+    }
+
+    button[type="submit"]:hover {
+        background: rgba(0, 255, 204, 0.1);
+        box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
+    }
+
+    button[type="submit"]:disabled {
+        border-color: var(--neon-pink);
+        color: var(--neon-pink);
+        text-shadow: none;
+        box-shadow: none;
+        background: rgba(255, 0, 204, 0.1);
+        cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+    <!-- Concert poster block: WHO → WHEN → WHERE → PRICE (D-11) -->
+    <div class="poster-block">
+      <h1 class="event-name"><%= event.name %></h1>
+      <p class="event-date">
+        <%= new Date(event.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %>
+      </p>
+      <p class="event-venue"><%= event.venue %></p>
+      <p class="event-price">$<%= (event.price_cents / 100).toFixed(0) %></p>
+      <span class="capacity-badge <%= capacityLabel === 'Available' ? 'available' : capacityLabel === 'Limited' ? 'limited' : capacityLabel === 'A Few Left' ? 'a-few-left' : capacityLabel === 'Almost Gone' ? 'almost-gone' : 'sold-out' %>">
+        <%= capacityLabel %>
+      </span>
+    </div>
+
+    <!-- Buy form card -->
+    <div class="buy-form-card">
+      <form action="/checkout" method="POST">
+        <div class="form-group">
+          <label for="name">Your name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            <% if (isSoldOut) { %>disabled<% } %>
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            <% if (isSoldOut) { %>disabled<% } %>
+          />
+          <p class="email-hint">We won't email you. This is for the door list only.</p>
+        </div>
+        <button type="submit" <% if (isSoldOut) { %>disabled<% } %>>
+          <% if (isSoldOut) { %>Sold Out<% } else { %>Buy My Ticket<% } %>
+        </button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
