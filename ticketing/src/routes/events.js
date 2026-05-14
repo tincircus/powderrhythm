@@ -1,8 +1,103 @@
 'use strict';
 
+const { randomUUID } = require('crypto');
 const express = require('express');
 const router = express.Router();
+const db = require('../db/knex');
+const squareClient = require('../lib/square');
 
-// TODO: Implement in Phase 2
+// GET / — render event page with live capacity display
+// Express 5: async handler — errors auto-forwarded to global error handler
+router.get('/', async (req, res) => {
+  const event = await db('events').first();
+  const confirmedCount = await db('tickets')
+    .where({ event_id: event.id, status: 'confirmed' })
+    .count('id as n')
+    .first()
+    .then((r) => parseInt(r.n, 10));
+
+  const isSoldOut = confirmedCount >= event.capacity;
+
+  // Capacity bucket thresholds (D-12, from 02-UI-SPEC.md §Capacity Badge)
+  // Tuned for 50-seat venue; scale proportionally with event.capacity
+  const ratio = confirmedCount / event.capacity;
+  let capacityLabel;
+  if (isSoldOut)          capacityLabel = 'Sold Out';
+  else if (ratio >= 0.96) capacityLabel = 'Almost Gone';
+  else if (ratio >= 0.80) capacityLabel = 'A Few Left';
+  else if (ratio >= 0.60) capacityLabel = 'Limited';
+  else                    capacityLabel = 'Available';
+
+  res.render('event', { event, confirmedCount, capacityLabel, isSoldOut });
+});
+
+// POST /checkout — validate input, create pending ticket, redirect to Square
+// Express 5: async handler — errors forwarded except the explicit Square API try/catch
+router.post('/checkout', async (req, res) => {
+  const { name, email } = req.body;
+
+  // Input validation — return to event page with error on failure
+  if (!name || !name.trim()) return res.redirect('/?error=name');
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+    return res.redirect('/?error=email');
+  }
+
+  const event = await db('events').first();
+
+  // Capacity pre-check (D-08: confirmed only — pending rows don't consume capacity)
+  const confirmedCount = await db('tickets')
+    .where({ event_id: event.id, status: 'confirmed' })
+    .count('id as n')
+    .first()
+    .then((r) => parseInt(r.n, 10));
+  if (confirmedCount >= event.capacity) return res.redirect('/?error=soldout');
+
+  // Create pending ticket row (D-03)
+  const uuid = randomUUID();
+  await db('tickets').insert({
+    uuid,
+    event_id: event.id,
+    buyer_name: name.trim(),
+    buyer_email: email.trim().toLowerCase(),
+    status: 'pending',
+  });
+
+  // Create Square payment link
+  const redirectUrl = `${process.env.APP_URL}/ticket/pending?uuid=${uuid}`;
+  let paymentLink;
+  try {
+    const response = await squareClient.checkout.paymentLinks.create({
+      idempotencyKey: randomUUID(),
+      quickPay: {
+        name: event.name,
+        priceMoney: {
+          amount: BigInt(event.price_cents), // Square SDK requires BigInt for money
+          currency: 'USD',
+        },
+        locationId: process.env.SQUARE_LOCATION_ID,
+      },
+      checkoutOptions: {
+        redirectUrl,
+      },
+      prePopulatedData: {
+        buyerEmail: email.trim().toLowerCase(),
+      },
+    });
+    paymentLink = response.paymentLink;
+  } catch (err) {
+    // Square API failed — clean up pending row to avoid orphaned records (Pitfall 6)
+    await db('tickets').where({ uuid }).delete();
+    return res.status(500).render('error', {
+      message: 'Something went wrong starting checkout. Try again or contact us.',
+    });
+  }
+
+  // Store order_id for webhook correlation (D-07 revised: use order_id, NOT reference_id)
+  await db('tickets').where({ uuid }).update({
+    square_order_id: paymentLink.orderId,
+  });
+
+  return res.redirect(302, paymentLink.url);
+});
 
 module.exports = router;
