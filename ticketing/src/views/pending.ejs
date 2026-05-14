@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Getting your ticket ready — Powder Rhythm</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Fredoka+One&family=Permanent+Marker&family=Special+Elite&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+        --deep-purple: #1a0033;
+        --neon-teal:   #00ffcc;
+        --neon-pink:   #ff00cc;
+        --neon-yellow: #ffff00;
+        --hot-pink:    #ff4da6;
+        --snow-white:  #f0f8ff;
+    }
+
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: var(--deep-purple);
+        background-image:
+            radial-gradient(ellipse at 20% 50%, rgba(0, 255, 204, 0.08) 0%, transparent 60%),
+            radial-gradient(ellipse at 80% 20%, rgba(255, 0, 204, 0.08) 0%, transparent 60%);
+        color: var(--snow-white);
+        font-family: 'Special Elite', cursive;
+        margin: 0;
+        padding: 0 16px;
+        min-height: 100vh;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+    }
+
+    .container {
+        max-width: 480px;
+        width: 100%;
+        padding-top: 48px;
+        text-align: center;
+    }
+
+    .status-heading {
+        font-family: 'Fredoka One', cursive;
+        font-size: 1.5rem;
+        line-height: 1.3;
+        color: var(--neon-teal);
+        margin: 0 0 16px;
+    }
+
+    .status-heading.timeout {
+        color: var(--neon-yellow);
+    }
+
+    .status-body {
+        font-family: 'Special Elite', cursive;
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--snow-white);
+        margin: 0;
+    }
+
+    /* Animated ellipsis — CSS only, no JS animation library */
+    @keyframes blink {
+        0%   { opacity: 1; }
+        50%  { opacity: 0; }
+        100% { opacity: 1; }
+    }
+
+    #dots {
+        display: inline-block;
+        animation: blink 1.5s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="status-heading" id="status-heading">Getting your ticket ready<span id="dots">...</span></h1>
+    <p class="status-body" id="status-body">Hang on while we confirm your payment...</p>
+  </div>
+
+  <script>
+    const uuid = '<%= uuid %>';
+    const interval = 2000;
+    const timeout = 30000;
+    const started = Date.now();
+    let networkErrors = 0;
+
+    const showTimeout = () => {
+      const heading = document.getElementById('status-heading');
+      const dots = document.getElementById('dots');
+      const body = document.getElementById('status-body');
+      heading.classList.add('timeout');
+      // Replace heading text but remove the dots span first
+      dots.style.display = 'none';
+      heading.childNodes[0].textContent = 'Taking longer than expected';
+      body.textContent = 'Your payment went through but confirmation is delayed. Refresh this page in a minute. Your ticket will be here.';
+    };
+
+    const poll = async () => {
+      if (Date.now() - started > timeout) {
+        showTimeout();
+        return;
+      }
+      try {
+        const res = await fetch('/api/ticket-status?uuid=' + uuid);
+        const data = await res.json();
+        if (data.status === 'confirmed') {
+          window.location.href = '/ticket/' + uuid;
+        } else {
+          networkErrors = 0;
+          setTimeout(poll, 2000);
+        }
+      } catch (e) {
+        networkErrors++;
+        if (networkErrors >= 3) {
+          showTimeout();
+        } else {
+          setTimeout(poll, 2000);
+        }
+      }
+    };
+
+    setTimeout(poll, 2000);
+  </script>
+</body>
+</html>
