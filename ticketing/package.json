@@ -16,6 +16,7 @@
     "express": "5.2.1",
     "knex": "3.2.10",
     "pg": "8.20.0",
+    "qrcode": "^1.5.4",
     "square": "^44.0.1"
   },
   "devDependencies": {

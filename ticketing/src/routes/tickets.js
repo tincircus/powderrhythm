@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db/knex');
+const QRCode = require('qrcode');
 
 // GET /ticket/pending?uuid=<uuid>
 // Renders the polling holding page while payment is being confirmed.
@@ -28,6 +29,17 @@ router.get('/api/ticket-status', async (req, res) => {
   const ticket = await db('tickets').select('status').where({ uuid }).first();
   if (!ticket) return res.status(404).json({ error: 'Not found' });
   res.json({ status: ticket.status });
+});
+
+// GET /ticket/:uuid
+// Renders the buyer-facing confirmation page with QR code.
+// Redirects to / if uuid is not found or ticket is not confirmed.
+// T-03-04 mitigation: WHERE clause includes status:'confirmed' — pending tickets redirect to /.
+router.get('/ticket/:uuid', async (req, res) => {
+  const { uuid } = req.params;
+  const ticket = await db('tickets').where({ uuid, status: 'confirmed' }).first();
+  if (!ticket) return res.redirect('/');
+  res.render('ticket', { ticket });
 });
 
 module.exports = router;
