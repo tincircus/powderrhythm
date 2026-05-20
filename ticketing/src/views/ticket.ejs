@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Ticket — Powder Rhythm</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Fredoka+One&family=Permanent+Marker&family=Special+Elite&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+        --deep-purple: #1a0033;
+        --neon-teal:   #00ffcc;
+        --neon-pink:   #ff00cc;
+        --neon-yellow: #ffff00;
+        --hot-pink:    #ff4da6;
+        --snow-white:  #f0f8ff;
+    }
+
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: var(--deep-purple);
+        background-image:
+            radial-gradient(ellipse at 20% 50%, rgba(0, 255, 204, 0.08) 0%, transparent 60%),
+            radial-gradient(ellipse at 80% 20%, rgba(255, 0, 204, 0.08) 0%, transparent 60%);
+        color: var(--snow-white);
+        font-family: 'Special Elite', cursive;
+        margin: 0;
+        padding: 0 16px;
+        min-height: 100vh;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+    }
+
+    .container {
+        max-width: 480px;
+        width: 100%;
+        padding-top: 48px;
+        text-align: center;
+    }
+
+    h1.ticket-heading {
+        font-family: 'Permanent Marker', cursive;
+        font-size: 2.5rem;
+        color: var(--neon-teal);
+        margin: 0 0 8px;
+    }
+
+    .buyer-name {
+        font-family: 'Boogaloo', sans-serif;
+        font-size: 0.85rem;
+        color: rgba(240, 248, 255, 0.6);
+        margin: 0 0 24px;
+    }
+
+    /* QR wrapper: white background required — dark page bleeds into QR quiet zone without it */
+    .qr-wrapper {
+        display: inline-block;
+        background: #ffffff;
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 24px;
+    }
+
+    .qr-wrapper img {
+        display: block;
+        width: 240px;
+        height: 240px;
+    }
+
+    .download-link {
+        display: inline-block;
+        font-family: 'Boogaloo', sans-serif;
+        font-size: 1rem;
+        color: var(--neon-teal);
+        text-decoration: none;
+        border: 2px solid var(--neon-teal);
+        border-radius: 8px;
+        padding: 12px 24px;
+        min-height: 44px;
+        margin-top: 24px;
+    }
+
+    .warning-block {
+        background: rgba(255, 255, 0, 0.08);
+        border: 1px solid var(--neon-yellow);
+        border-radius: 8px;
+        padding: 16px;
+        margin-top: 32px;
+        text-align: left;
+    }
+
+    .url-hint {
+        font-family: 'Boogaloo', sans-serif;
+        font-size: 0.85rem;
+        color: rgba(240, 248, 255, 0.6);
+        margin-top: 16px;
+    }
+
+    @media (min-width: 480px) {
+        .qr-wrapper img { width: 280px; height: 280px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="ticket-heading">You're in!</h1>
+
+    <% if (ticket.buyer_name) { %>
+    <p class="buyer-name">Ticket for: <%= ticket.buyer_name %></p>
+    <% } %>
+
+    <div class="qr-wrapper">
+      <img
+        src="/ticket/<%= ticket.uuid %>/qr.png"
+        alt="QR code for your ticket — scan at the door"
+        width="240"
+        height="240"
+      />
+    </div>
+
+    <a
+      class="download-link"
+      href="/ticket/<%= ticket.uuid %>/qr.png"
+      download
+      aria-label="Download QR code as PNG"
+    >Download QR Code</a>
+
+    <div class="warning-block" role="alert">
+      <strong>No email confirmation will be sent.</strong>
+      Save this page or bookmark it — this URL is your ticket.
+      Show the QR code at the door.
+    </div>
+
+    <p class="url-hint">Bookmark this page — this is your ticket</p>
+  </div>
+</body>
+</html>
