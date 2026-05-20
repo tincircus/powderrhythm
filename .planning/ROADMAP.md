@@ -13,7 +13,7 @@ Six phases take the ticketing system from a bare database schema to a production
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [ ] **Phase 1: Foundation** - Database module, full schema, startup migrations, and health check
-- [ ] **Phase 2: Square Integration** - Event page, checkout redirect, webhook processing, pending page, and all webhook security
+- [x] **Phase 2: Square Integration** - Event page, checkout redirect, webhook processing, pending page, and all webhook security (completed 2026-05-14)
 - [ ] **Phase 3: Confirmation + QR** - Permanent ticket page with QR code display, PNG download, and no-email warning
 - [ ] **Phase 4: Door Scanner** - Password-protected scan page, camera QR scanning, atomic scan endpoint, green/red feedback
 - [ ] **Phase 5: Admin Panel** - Attendee list, live headcount, manual check-in, and name search
@@ -33,8 +33,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans:** 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Knex dual-client module, directory scaffold, schema migration (events/tickets/processed_webhook_events), seed event row
-- [ ] 01-02-PLAN.md — Express app entrypoint, GET /health route, stub route and middleware files; Walking Skeleton functional
+- [x] 01-01-PLAN.md — Knex dual-client module, directory scaffold, schema migration (events/tickets/processed_webhook_events), seed event row
+- [x] 01-02-PLAN.md — Express app entrypoint, GET /health route, stub route and middleware files; Walking Skeleton functional
 
 ### Phase 2: Square Integration
 **Goal:** A buyer can view the event page, initiate a Square checkout, and have a ticket row created in the database when payment completes.
@@ -47,13 +47,24 @@ Plans:
 3. A completed Square sandbox payment creates exactly one ticket row with buyer name and email captured (PURCH-03)
 4. Sending the same webhook event twice results in only one ticket row — the duplicate is silently ignored (SEC-02)
 5. A webhook request with an invalid HMAC signature is rejected with 400 before any processing occurs (SEC-01)
-**Plans:** TBD
+**Plans:** 4/4 plans complete
 
 Plans:
-- [ ] 02-01: Event page with live capacity display and sold-out gate
-- [ ] 02-02: POST /checkout — Square payment link creation and redirect
-- [ ] 02-03: POST /webhooks/square — raw body parsing, HMAC verification, idempotency, ticket INSERT
-- [ ] 02-04: Pending polling page (GET /ticket/pending, GET /api/ticket-status)
+
+**Wave 1**
+- [x] 02-01-PLAN.md — Square SDK install, Phase 2 migration (status + square_order_id), Square singleton, GET / event page with concert poster layout and capacity badge
+
+**Wave 2** *(blocked on Wave 1 completion)*
+- [x] 02-02-PLAN.md — POST /checkout: validation, capacity gate, pending ticket INSERT, Square paymentLinks.create(), square_order_id UPDATE, redirect to Square
+- [x] 02-03-PLAN.md — POST /webhooks/square: raw body HMAC verification (SEC-01), event filtering, idempotency INSERT (SEC-02), ticket confirmation UPDATE
+
+**Wave 3** *(blocked on Wave 1 completion)*
+- [x] 02-04-PLAN.md — GET /ticket/pending and GET /api/ticket-status: pending page with 2s polling, 30s timeout, redirect on confirmed
+
+**Cross-cutting constraints:**
+- All routes use `const db = require('../db/knex')` — never re-instantiate Knex
+- Capacity counts `status = 'confirmed'` tickets only — pending rows from abandoned checkouts never count (D-08)
+- HMAC verification requires `req.rawBody` (raw string, not re-serialized JSON) — set via `express.json({ verify })` in index.js
 
 ### Phase 3: Confirmation + QR
 **Goal:** After payment, a buyer lands on a permanent page with a scannable QR code they can download or bookmark.
@@ -65,11 +76,11 @@ Plans:
 2. The confirmation page displays the buyer's QR code encoding the full ticket URL (CONF-02)
 3. Buyer can download the QR code as a PNG file directly from the confirmation page (CONF-03)
 4. The confirmation page explicitly tells the buyer no email will be sent and instructs them to save or bookmark the page (CONF-04)
-**Plans:** TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 03-01: GET /ticket/:uuid — server-side QR generation and confirmation page
-- [ ] 03-02: PNG download endpoint and no-email warning copy
+- [ ] 03-01-PLAN.md — qrcode npm install (legitimacy checkpoint), GET /ticket/:uuid route, ticket.ejs confirmation page template (CONF-02, CONF-04)
+- [ ] 03-02-PLAN.md — GET /ticket/:uuid/qr.png PNG endpoint with streaming, Content-Disposition header, stream error handling (CONF-03)
 **UI hint**: yes
 
 ### Phase 4: Door Scanner
@@ -131,7 +142,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 0/2 | Not started | - |
-| 2. Square Integration | 0/4 | Not started | - |
+| 2. Square Integration | 4/4 | Complete    | 2026-05-20 |
 | 3. Confirmation + QR | 0/2 | Not started | - |
 | 4. Door Scanner | 0/2 | Not started | - |
 | 5. Admin Panel | 0/2 | Not started | - |
