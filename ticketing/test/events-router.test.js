@@ -62,9 +62,6 @@ function makeBuilder(table) {
             }
             return Promise.resolve(null);
         },
-        then(resolve) {
-            return Promise.resolve([]).then(resolve);
-        },
     };
     return builder;
 }
@@ -72,6 +69,9 @@ function makeBuilder(table) {
 function dbStubFn(table) {
     return makeBuilder(table);
 }
+// Support db.transaction(async (trx) => { ... }) — pass a stub trx that behaves
+// like dbStubFn so transactional routes can be tested without a real DB.
+dbStubFn.transaction = async (callback) => callback(dbStubFn);
 dbStubFn.fn = { now: () => new Date().toISOString() };
 
 // Square stub
