@@ -446,6 +446,15 @@
   </footer>
 
   <script>
+    function escHtml(str) {
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#x27;');
+    }
+
     var SHOWS = [
         {
             artist: 'Utility (+ Roller Dome, After School Special)',
@@ -466,11 +475,11 @@
 
         var items = SHOWS.map(function (show) {
             var ticketsHtml = show.ticketUrl
-                ? '<a class="show-tickets" href="' + show.ticketUrl + '" target="_blank" rel="noopener noreferrer" aria-label="Get tickets for ' + show.artist + '">Get Tickets</a>'
+                ? '<a class="show-tickets" href="' + escHtml(show.ticketUrl) + '" target="_blank" rel="noopener noreferrer" aria-label="Get tickets for ' + escHtml(show.artist) + '">Get Tickets</a>'
                 : '';
             return '<li class="show-card">'
-                + '<span class="show-artist">' + show.artist + '</span>'
-                + '<span class="show-meta">' + show.date + ' &bull; ' + show.venue + '</span>'
+                + '<span class="show-artist">' + escHtml(show.artist) + '</span>'
+                + '<span class="show-meta">' + escHtml(show.date) + ' &bull; ' + escHtml(show.venue) + '</span>'
                 + ticketsHtml
                 + '</li>';
         }).join('');
