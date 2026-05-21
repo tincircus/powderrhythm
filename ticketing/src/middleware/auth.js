@@ -25,11 +25,14 @@ function compareStrings(a, b) {
 }
 
 /**
- * makeAuthMiddleware(cookieName) — factory returning a requireAuth middleware.
+ * makeAuthMiddleware(cookieName, loginPath) — factory returning a requireAuth middleware.
  * The returned middleware validates the HMAC token in req.cookies[cookieName].
- * Redirects to /scan/login if missing or invalid; returns 500 if ADMIN_PASSWORD unset.
+ * Redirects to loginPath if missing or invalid; returns 500 if ADMIN_PASSWORD unset.
+ *
+ * @param {string} cookieName  - Name of the cookie to read (e.g. 'scan_auth', 'admin_auth')
+ * @param {string} [loginPath='/scan/login']  - Redirect target when unauthenticated
  */
-function makeAuthMiddleware(cookieName) {
+function makeAuthMiddleware(cookieName, loginPath = '/scan/login') {
   return function requireAuth(req, res, next) {
     const password = process.env.ADMIN_PASSWORD;
     if (!password) {
@@ -40,7 +43,7 @@ function makeAuthMiddleware(cookieName) {
     if (token && compareStrings(token, expected)) {
       return next();
     }
-    return res.redirect('/scan/login');
+    return res.redirect(loginPath);
   };
 }
 

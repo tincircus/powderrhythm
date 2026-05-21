@@ -149,12 +149,17 @@ Plans:
 3. Admin can click a button to manually mark an attendee as checked in when the QR code fails (ADMIN-03)
 4. Admin can type a name into a search field to filter the attendee list in real time without a page reload (ADMIN-04)
 
-**Plans:** TBD
+**Plans:** 2 plans
 
 Plans:
 
-- [ ] 05-01: GET /admin — password gate and attendee list with headcount
-- [ ] 05-02: Manual check-in endpoint and client-side name search
+**Wave 1**
+
+- [ ] 05-01-PLAN.md — makeAuthMiddleware loginPath extension, admin.js login routes + GET /admin with attendee list and headcount, admin-login.ejs and admin.ejs views, router mount in index.js (ADMIN-01, ADMIN-02)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 05-02-PLAN.md — POST /api/admin/checkin/:uuid atomic check-in endpoint, client-side search filter and check-in fetch interaction (ADMIN-03, ADMIN-04)
 
 **UI hint**: yes
 
