@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scanner Login — Powder Rhythm</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Fredoka+One&family=Permanent+Marker&family=Special+Elite&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+        --deep-purple: #1a0033;
+        --neon-teal:   #00ffcc;
+        --neon-pink:   #ff00cc;
+        --neon-yellow: #ffff00;
+        --hot-pink:    #ff4da6;
+        --snow-white:  #f0f8ff;
+    }
+
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: var(--deep-purple);
+        background-image:
+            radial-gradient(ellipse at 20% 50%, rgba(0,255,204,0.08) 0%, transparent 60%),
+            radial-gradient(ellipse at 80% 20%, rgba(255,0,204,0.08) 0%, transparent 60%);
+        color: var(--snow-white);
+        font-family: 'Special Elite', cursive;
+        margin: 0;
+        padding: 48px 16px 64px;
+        min-height: 100vh;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+    }
+
+    .container {
+        max-width: 480px;
+        width: 100%;
+    }
+
+    h1 {
+        font-family: 'Fredoka One', cursive;
+        font-size: 1.5rem;
+        color: var(--neon-teal);
+        margin: 0 0 24px 0;
+    }
+
+    .form-card {
+        background: rgba(255,255,255,0.05);
+        border: 2px solid var(--neon-teal);
+        border-radius: 12px;
+        padding: 32px 24px;
+    }
+
+    label {
+        display: block;
+        font-family: 'Special Elite', cursive;
+        font-size: 1rem;
+        color: var(--snow-white);
+        margin-bottom: 8px;
+    }
+
+    input[type="password"] {
+        display: block;
+        width: 100%;
+        background: rgba(255,255,255,0.07);
+        border: 2px solid var(--neon-teal);
+        border-radius: 8px;
+        color: var(--snow-white);
+        font-family: 'Special Elite', cursive;
+        font-size: 1rem;
+        padding: 8px 16px;
+        min-height: 44px;
+        box-sizing: border-box;
+        margin-bottom: 16px;
+    }
+
+    input[type="password"]:focus {
+        outline: 3px solid var(--neon-teal);
+        outline-offset: 4px;
+    }
+
+    button[type="submit"] {
+        display: block;
+        width: 100%;
+        font-family: 'Fredoka One', cursive;
+        font-size: 1.5rem;
+        color: var(--neon-teal);
+        border: 2px solid var(--neon-teal);
+        border-radius: 8px;
+        background: transparent;
+        min-height: 44px;
+        padding: 8px 32px;
+        cursor: pointer;
+        margin-top: 16px;
+    }
+
+    button[type="submit"]:hover {
+        background: rgba(0,255,204,0.1);
+        box-shadow: 0 0 20px rgba(0,255,204,0.4);
+    }
+
+    .error {
+        font-family: 'Special Elite', cursive;
+        font-size: 0.85rem;
+        color: var(--neon-pink);
+        margin-bottom: 16px;
+    }
+
+    .hint {
+        font-family: 'Boogaloo', cursive;
+        font-size: 0.85rem;
+        color: rgba(240,248,255,0.6);
+        text-align: center;
+        margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Scanner Login</h1>
+    <div class="form-card">
+      <form action="/scan/login" method="POST">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" autocomplete="current-password" required />
+        <% if (locals.error) { %>
+          <p class="error"><%= error %></p>
+        <% } %>
+        <button type="submit">Unlock Scanner</button>
+      </form>
+    </div>
+    <p class="hint">Staff access only</p>
+  </div>
+</body>
+</html>

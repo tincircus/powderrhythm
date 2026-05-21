@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Door Scanner — Powder Rhythm</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Fredoka+One&family=Permanent+Marker&family=Special+Elite&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+        --deep-purple: #1a0033;
+        --neon-teal:   #00ffcc;
+        --neon-pink:   #ff00cc;
+        --neon-yellow: #ffff00;
+        --hot-pink:    #ff4da6;
+        --snow-white:  #f0f8ff;
+    }
+
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
+    video#qr-video {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 1;
+    }
+
+    .aim-guide {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        width: 220px;
+        height: 220px;
+        border: 3px solid rgba(0,255,204,0.7);
+        border-radius: 12px;
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    .status-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 16px;
+        text-align: center;
+        z-index: 3;
+        background: rgba(26,0,51,0.8);
+        font-family: 'Boogaloo', cursive;
+        font-size: 0.85rem;
+        color: var(--snow-white);
+    }
+
+    #result-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 24px;
+    }
+
+    #result-heading {
+        font-family: 'Permanent Marker', cursive;
+        font-size: clamp(2rem,8vw,3.5rem);
+        color: white;
+        margin: 0 0 8px 0;
+        white-space: pre-line;
+        padding: 0 16px;
+    }
+
+    #result-sub {
+        font-family: 'Boogaloo', cursive;
+        font-size: 1rem;
+        color: white;
+        margin: 0;
+    }
+
+    .search-section {
+        position: fixed;
+        bottom: 64px;
+        left: 0;
+        right: 0;
+        z-index: 4;
+        padding: 0 16px;
+    }
+
+    summary {
+        font-family: 'Boogaloo', cursive;
+        font-size: 0.85rem;
+        color: var(--neon-teal);
+        cursor: pointer;
+        list-style: none;
+        background: rgba(26,0,51,0.85);
+        border: 1px solid rgba(0,255,204,0.4);
+        border-radius: 8px;
+        padding: 12px 16px;
+    }
+
+    .search-panel-inner {
+        background: rgba(26,0,51,0.92);
+        border: 1px solid var(--neon-teal);
+        border-radius: 0 0 8px 8px;
+        padding: 16px;
+    }
+
+    .search-input {
+        width: 100%;
+        background: rgba(255,255,255,0.07);
+        border: 1px solid var(--neon-teal);
+        border-radius: 6px;
+        color: var(--snow-white);
+        font-family: 'Special Elite', cursive;
+        font-size: 1rem;
+        padding: 8px 12px;
+        min-height: 44px;
+        box-sizing: border-box;
+    }
+
+    .search-results {
+        margin-top: 8px;
+        list-style: none;
+        padding: 0;
+        margin-left: 0;
+    }
+
+    .search-results li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        font-family: 'Special Elite', cursive;
+        font-size: 0.9rem;
+        color: var(--snow-white);
+    }
+
+    .checkin-btn {
+        font-family: 'Boogaloo', cursive;
+        font-size: 0.85rem;
+        color: var(--neon-teal);
+        border: 1px solid var(--neon-teal);
+        border-radius: 6px;
+        background: transparent;
+        padding: 4px 12px;
+        min-height: 44px;
+        cursor: pointer;
+    }
+  </style>
+</head>
+<body style="margin:0;padding:0;overflow:hidden;background:#000">
+  <video id="qr-video" playsinline autoplay muted aria-hidden="true"></video>
+  <div class="aim-guide" aria-hidden="true"></div>
+  <div class="status-bar">Hold QR code inside the frame</div>
+  <div id="result-overlay" role="alert" aria-hidden="true">
+    <div id="result-heading"></div>
+    <div id="result-sub"></div>
+  </div>
+  <div class="search-section">
+    <details>
+      <summary>Can't scan? Search by name</summary>
+      <div class="search-panel-inner">
+        <input class="search-input" type="text" id="search-input" placeholder="Name or email" aria-label="Search attendees" />
+        <ul class="search-results" id="search-results"></ul>
+      </div>
+    </details>
+  </div>
+
+  <script type="module">
+    import QrScanner from 'https://cdn.jsdelivr.net/npm/qr-scanner@1.4.2/qr-scanner.min.js';
+
+    const video         = document.getElementById('qr-video');
+    const overlay       = document.getElementById('result-overlay');
+    const heading       = document.getElementById('result-heading');
+    const sub           = document.getElementById('result-sub');
+    const searchInput   = document.getElementById('search-input');
+    const searchResults = document.getElementById('search-results');
+    let busy = false;
+
+    function show(color, headingText, subText) {
+        overlay.style.background = color === 'green' ? '#00c853' : color === 'gray' ? '#555555' : '#d50000';
+        heading.textContent = headingText;
+        sub.textContent = subText;
+        overlay.style.display = 'flex';
+        overlay.setAttribute('aria-hidden', 'false');
+    }
+
+    function reset() {
+        setTimeout(() => {
+            overlay.style.display = 'none';
+            overlay.setAttribute('aria-hidden', 'true');
+            busy = false;
+            scanner.start();
+        }, 3000);
+    }
+
+    async function handleScan(uuid) {
+        try {
+            const r = await fetch('/api/scan', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ uuid }),
+            });
+            const j = await r.json();
+            if (j.ok) {
+                show('green', j.name || 'Valid Ticket', 'Valid ticket');
+            } else if (j.reason === 'already_scanned') {
+                show('red', 'Already scanned', 'First scanned at ' + new Date(j.scannedAt).toLocaleTimeString());
+            } else {
+                show('red', 'Not found', 'This QR code is not a valid ticket');
+            }
+        } catch (e) {
+            show('gray', 'Network error', 'Try again');
+        }
+        reset();
+    }
+
+    const scanner = new QrScanner(video, async (result) => {
+        if (busy) return;
+        busy = true;
+        scanner.stop();
+        const match = result.data.match(/\/ticket\/([0-9a-f-]{36})/i);
+        if (!match) {
+            show('red', 'Not a ticket', 'QR code not recognized');
+            reset();
+            return;
+        }
+        await handleScan(match[1]);
+    }, {
+        returnDetailedScanResult: true,
+        preferredCamera: 'environment',
+        maxScansPerSecond: 5,
+    });
+
+    scanner.start().catch(() => {
+        show('gray', 'Camera unavailable. Make sure the page is served over HTTPS.', '');
+    });
+
+    searchInput.addEventListener('input', async (e) => {
+        const q = e.target.value.trim();
+        if (q.length < 2) { searchResults.innerHTML = ''; return; }
+        try {
+            const r = await fetch('/api/scan/search?q=' + encodeURIComponent(q));
+            if (!r.ok) { searchResults.innerHTML = ''; return; }
+            const items = await r.json();
+            searchResults.innerHTML = items.map(t =>
+                '<li><span>' + t.buyer_name + ' — ' + t.buyer_email + '</span><button class="checkin-btn" data-uuid="' + t.uuid + '">Check In</button></li>'
+            ).join('');
+            searchResults.querySelectorAll('.checkin-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    if (busy) return;
+                    busy = true;
+                    scanner.stop();
+                    await handleScan(btn.dataset.uuid);
+                });
+            });
+        } catch (_) {}
+    });
+  </script>
+</body>
+</html>

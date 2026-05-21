@@ -20,6 +20,7 @@ app.use(express.json({
   },
 }));
 app.use(express.urlencoded({ extended: false }));
+app.use(require('cookie-parser')());
 
 const eventsRouter   = require('./src/routes/events');   // GET /, POST /checkout
 const webhooksRouter = require('./src/routes/webhooks'); // POST /webhooks/square
@@ -28,6 +29,7 @@ const ticketsRouter  = require('./src/routes/tickets');  // GET /ticket/pending,
 app.use('/webhooks', webhooksRouter);  // mount before '/' to avoid catch-all match issues
 app.use('/', eventsRouter);
 app.use('/', ticketsRouter);
+app.use('/', require('./src/routes/scan'));
 
 // GET /health — DB connectivity check
 app.get('/health', async (req, res) => {
