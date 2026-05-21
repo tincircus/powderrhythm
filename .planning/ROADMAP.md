@@ -27,7 +27,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 ### Milestone v1.1 — Website Redesign
 
 - [x] **Phase 7: Strip and Rebuild Layout** - Remove all blog content and interactive widgets; rebuild page structure with Powder Rhythm visual identity and updated navigation (completed 2026-05-21)
-- [ ] **Phase 8: Business Content** - Shows section with JS-driven rendering and contact/location section
+- [x] **Phase 8: Business Content** - Shows section with JS-driven rendering and contact/location section (completed 2026-05-21)
 
 ## Phase Details
 
@@ -176,12 +176,17 @@ Plans:
 3. The app handles SIGTERM gracefully — in-flight requests complete before the process exits
 4. A real production Square webhook is registered and verified with a live test charge at least 72 hours before May 29
 
-**Plans:** TBD
+**Plans:** 2 plans
 
 Plans:
 
-- [ ] 06-01: Railway environment config, Postgres connection (DATABASE_PRIVATE_URL, SSL), graceful SIGTERM shutdown
-- [ ] 06-02: Rate limiting on /api/scan, production Square webhook registration, end-to-end mobile verification
+**Wave 1**
+
+- [ ] 06-01-PLAN.md — express-rate-limit install, knex.js three-branch Postgres config, SIGTERM graceful shutdown, .env.example update
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 06-02-PLAN.md — scanRateLimiter on POST /api/scan (SEC-04), 429 regression test, Railway env vars + Square production webhook ops checkpoint
 
 ---
 
@@ -225,11 +230,11 @@ Plans:
 
 1. Adding a show object to the JavaScript array and reloading the page renders it in the shows section with artist name, date, and venue name — no HTML editing required (SHOW-01, SHOW-02)
 2. A show with a `ticketUrl` displays a "Get Tickets" link; a show without one displays no link at all (SHOW-03)
-3. When the shows array is empty, the shows section displays "No upcoming shows — check back soon" (SHOW-04)
-4. The contact section displays the physical address, cross-street, store/venue hours, and a phone number or email address (CONT-01, CONT-02, CONT-04)
-5. The contact section includes at minimum a working Instagram link (CONT-03)
+3. When the shows array is empty, the shows section displays "No upcoming shows. Check back soon." (SHOW-04)
+4. The contact section displays the physical address and a phone number or email address (CONT-01, CONT-04) — cross-street omitted (D-05: not needed), hours omitted (D-06: not yet confirmed, CONT-02 deferred)
+5. Social/Instagram link deferred to when an account exists (D-08: no active account at launch, CONT-03 deferred)
 
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 
@@ -239,7 +244,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 08-02-PLAN.md — #shows section: noscript fallback + SHOWS array + JS render function; #contact section: Address and Email static HTML
+- [x] 08-02-PLAN.md — #shows section: noscript fallback + SHOWS array + JS render function; #contact section: Address and Email static HTML
 
 **UI hint**: yes
 
@@ -258,4 +263,4 @@ Website redesign phases execute independently: 7 → 8
 | 5. Admin Panel | 0/2 | Not started | - |
 | 6. Production Hardening | 0/2 | Not started | - |
 | 7. Strip and Rebuild Layout | 2/2 | Complete   | 2026-05-21 |
-| 8. Business Content | 1/2 | In Progress|  |
+| 8. Business Content | 2/2 | Complete   | 2026-05-21 |
