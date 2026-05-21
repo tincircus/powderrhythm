@@ -58,21 +58,23 @@ router.post('/api/scan', async (req, res) => {
     }
 
     // Step 3 — Atomic UPDATE (SEC-03, T-4-07)
+    // status: 'confirmed' ensures unconfirmed (unpaid) tickets cannot be scanned in (CR-01).
     // whereNull('scanned_at') ensures only one concurrent request succeeds.
     // No .returning() chained — preserves cross-DB integer rows-affected result (Pitfall 6).
     const rowsAffected = await db('tickets')
-      .where({ uuid })
+      .where({ uuid, status: 'confirmed' })
       .whereNull('scanned_at')
       .update({ scanned_at: db.fn.now() });
 
     if (rowsAffected === 1) {
       // Step 4 — Fetch buyer name for green display (no email — T-4-09)
       const ticket = await db('tickets').select('buyer_name').where({ uuid }).first();
-      return res.json({ ok: true, name: ticket.buyer_name });
+      return res.json({ ok: true, name: ticket ? ticket.buyer_name : null });
     }
 
     // Step 5 — rowsAffected === 0: already scanned or not found
-    const ticket = await db('tickets').select('buyer_name', 'scanned_at').where({ uuid }).first();
+    // status: 'confirmed' guard prevents leaking existence of pending tickets (CR-01).
+    const ticket = await db('tickets').select('buyer_name', 'scanned_at').where({ uuid, status: 'confirmed' }).first();
     if (!ticket) {
       return res.json({ ok: false, reason: 'not_found' });
     }
