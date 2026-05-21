@@ -24,12 +24,13 @@ app.use(express.json({
 app.use(express.urlencoded({ extended: false }));
 app.use(require('cookie-parser')());
 
-const eventsRouter   = require('./src/routes/events');   // GET /, POST /checkout
+const eventsRouter   = require('./src/routes/events');   // GET /events/:id, POST /events/:id/checkout
 const webhooksRouter = require('./src/routes/webhooks'); // POST /webhooks/square
 const ticketsRouter  = require('./src/routes/tickets');  // GET /ticket/pending, GET /api/ticket-status
 
 app.use('/webhooks', webhooksRouter);  // mount before '/' to avoid catch-all match issues
-app.use('/', eventsRouter);
+app.get('/', (req, res) => res.redirect(302, '/events/1'));
+app.use('/events', eventsRouter);
 app.use('/', ticketsRouter);
 app.use('/', require('./src/routes/scan'));
 app.use('/', require('./src/routes/admin'));
