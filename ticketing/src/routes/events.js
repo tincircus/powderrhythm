@@ -32,7 +32,8 @@ router.get('/:id', async (req, res) => {
   else if (ratio >= 0.60) capacityLabel = 'Limited';
   else                    capacityLabel = 'Available';
 
-  res.render('event', { event, confirmedCount, capacityLabel, isSoldOut });
+  const errorParam = req.query.error || null;
+  res.render('event', { event, confirmedCount, capacityLabel, isSoldOut, errorParam });
 });
 
 // POST /events/:id/checkout — validate input, create pending ticket, redirect to Square

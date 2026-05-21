@@ -192,6 +192,18 @@
         background: rgba(255, 0, 204, 0.1);
         cursor: not-allowed;
     }
+
+    /* Validation / redirect error feedback (WR-01) */
+    .form-error {
+        font-family: 'Special Elite', cursive;
+        font-size: 0.95rem;
+        color: var(--neon-pink);
+        background: rgba(255, 0, 204, 0.08);
+        border: 1px solid var(--neon-pink);
+        border-radius: 6px;
+        padding: 8px 14px;
+        margin-bottom: 16px;
+    }
   </style>
 </head>
 <body>
@@ -217,6 +229,13 @@
 
     <!-- Buy form card -->
     <div class="buy-form-card">
+      <% if (errorParam === 'name') { %>
+        <p class="form-error">Please enter your name.</p>
+      <% } else if (errorParam === 'email') { %>
+        <p class="form-error">Please enter a valid email address.</p>
+      <% } else if (errorParam === 'soldout') { %>
+        <p class="form-error">Sorry, this event just sold out.</p>
+      <% } %>
       <form action="/events/<%= event.id %>/checkout" method="POST">
         <div class="form-group">
           <label for="name">Your name</label>
