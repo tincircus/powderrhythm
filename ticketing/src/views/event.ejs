@@ -98,6 +98,16 @@
         font-weight: bold;
     }
 
+    /* Show poster */
+    .poster-img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin: 0 auto 24px;
+        box-shadow: 0 0 20px rgba(255, 0, 204, 0.3);
+    }
+
     /* Buy form card — panel style (matches .panel from blog) */
     .buy-form-card {
         background: rgba(255, 255, 255, 0.05);
@@ -188,6 +198,12 @@
   <div class="page-wrapper">
     <!-- Concert poster block: WHO → WHEN → WHERE → PRICE (D-11) -->
     <div class="poster-block">
+      <img
+        src="/posters/event-<%= event.id %>.jpg"
+        alt="<%= event.name %> show poster"
+        class="poster-img"
+        onerror="this.style.display='none'"
+      />
       <h1 class="event-name"><%= event.name %></h1>
       <p class="event-date">
         <%= new Date(event.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %>
