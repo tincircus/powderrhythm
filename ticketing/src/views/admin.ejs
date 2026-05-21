@@ -249,6 +249,90 @@
     <% } %>
   </div>
 
-  <!-- JS: search + check-in interaction added in Plan 02 -->
+  <script>
+    (function () {
+        // Section 1 — Search filter
+        var searchInput = document.getElementById('search-input');
+        if (!searchInput) return;
+
+        searchInput.addEventListener('input', function () {
+            var query = searchInput.value.toLowerCase();
+            var tbody = document.getElementById('attendee-tbody');
+            if (!tbody) return;
+            var rows = tbody.getElementsByTagName('tr');
+            for (var i = 0; i < rows.length; i++) {
+                var tr = rows[i];
+                if (tr.dataset.name !== undefined) {
+                    tr.style.display = tr.dataset.name.includes(query) ? '' : 'none';
+                }
+            }
+        });
+
+        // Section 2 — Manual check-in via event delegation
+        var tbody = document.getElementById('attendee-tbody');
+        if (!tbody) return;
+
+        tbody.addEventListener('click', function (e) {
+            var button = e.target.closest('.checkin-btn');
+            if (!button) return;
+
+            var uuid = button.dataset.uuid;
+            if (!uuid) return;
+
+            button.disabled = true;
+
+            fetch('/api/admin/checkin/' + uuid, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(function (response) {
+                return response.json().then(function (data) {
+                    return { response: response, data: data };
+                });
+            })
+            .then(function (result) {
+                var response = result.response;
+                var data = result.data;
+
+                if (response.ok || response.status === 409) {
+                    var tr = button.closest('tr');
+                    var cells = tr.getElementsByTagName('td');
+
+                    // Status td (index 2): update badge to "Checked in"
+                    var statusTd = cells[2];
+                    statusTd.innerHTML = '<span class="badge-checked">Checked in</span>';
+
+                    // Scan time td (index 3): format scanned_at
+                    var scanTimeTd = cells[3];
+                    scanTimeTd.textContent = new Date(data.scanned_at).toLocaleTimeString();
+                    scanTimeTd.className = 'scan-time';
+
+                    // Action td (index 4): replace button with Done label
+                    var actionTd = cells[4];
+                    actionTd.innerHTML = '<span class="done-label">Done</span>';
+                } else {
+                    // 404 or other non-ok: re-enable button, show error row
+                    button.disabled = false;
+                    showErrorRow(button.closest('tr'));
+                }
+            })
+            .catch(function () {
+                button.disabled = false;
+                showErrorRow(button.closest('tr'));
+            });
+        });
+
+        function showErrorRow(tr) {
+            var errorTr = document.createElement('tr');
+            errorTr.innerHTML = '<td colspan="5"><span role="alert" style="font-family: \'Boogaloo\', sans-serif; font-size: 0.85rem; color: var(--neon-pink);">Check-in failed. Try again.</span></td>';
+            tr.insertAdjacentElement('afterend', errorTr);
+            setTimeout(function () {
+                if (errorTr.parentNode) {
+                    errorTr.parentNode.removeChild(errorTr);
+                }
+            }, 4000);
+        }
+    }());
+  </script>
 </body>
 </html>
