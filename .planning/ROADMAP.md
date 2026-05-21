@@ -21,7 +21,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: Square Integration** - Event page, checkout redirect, webhook processing, pending page, and all webhook security (completed 2026-05-14)
 - [x] **Phase 3: Confirmation + QR** - Permanent ticket page with QR code display, PNG download, and no-email warning (completed 2026-05-21)
 - [x] **Phase 4: Door Scanner** - Password-protected scan page, camera QR scanning, atomic scan endpoint, green/red feedback (completed 2026-05-21)
-- [ ] **Phase 5: Admin Panel** - Attendee list, live headcount, manual check-in, and name search
+- [x] **Phase 5: Admin Panel** - Attendee list, live headcount, manual check-in, and name search (completed 2026-05-21)
 - [ ] **Phase 6: Production Hardening** - Railway deployment, Postgres config, rate limiting, go-live verification
 
 ### Milestone v1.1 — Website Redesign
@@ -155,11 +155,11 @@ Plans:
 
 **Wave 1**
 
-- [ ] 05-01-PLAN.md — makeAuthMiddleware loginPath extension, admin.js login routes + GET /admin with attendee list and headcount, admin-login.ejs and admin.ejs views, router mount in index.js (ADMIN-01, ADMIN-02)
+- [x] 05-01-PLAN.md — makeAuthMiddleware loginPath extension, admin.js login routes + GET /admin with attendee list and headcount, admin-login.ejs and admin.ejs views, router mount in index.js (ADMIN-01, ADMIN-02)
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 05-02-PLAN.md — POST /api/admin/checkin/:uuid atomic check-in endpoint, client-side search filter and check-in fetch interaction (ADMIN-03, ADMIN-04)
+- [x] 05-02-PLAN.md — POST /api/admin/checkin/:uuid atomic check-in endpoint, client-side search filter and check-in fetch interaction (ADMIN-03, ADMIN-04)
 
 **UI hint**: yes
 
