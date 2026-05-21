@@ -37,7 +37,7 @@ exports.up = async function (knex) {
       date: '2026-05-29 20:00:00',
       venue: 'Powder Rhythm, Baker City, OR',
       price_cents: 2000,
-      capacity: 50,
+      capacity: 20,
       description: null,
     });
   }
