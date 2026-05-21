@@ -65,6 +65,8 @@ Recent decisions affecting current work:
 - Init: Square Checkout Links (redirect) over embedded SDK — no PCI scope, Square handles all payment UX
 - Init: QR on confirmation page (no email) — simpler stack, Resend can be added later
 - Init: Shared password auth (no JWT/sessions) — venue staff is 1-2 people
+- Phase 4: HTTPS required on phones for getUserMedia — camera works on Mac over HTTP; phone scanning requires Railway HTTPS (Phase 6)
+- Phase 4: Atomic UPDATE WHERE status='confirmed' AND scanned_at IS NULL — prevents both race condition and unpaid ticket admission
 
 ### Pending Todos
 
@@ -73,8 +75,8 @@ None yet.
 ### Blockers/Concerns
 
 - Need May 29 event capacity from venue before seeding the `events` table (Phase 1)
-- Open question: does `buyer_email_address` appear in `payment.updated` for payment link purchases? Log full webhook body in sandbox during Phase 2 to confirm.
-- Confirm scanning phone is iOS or Android before Phase 4 (affects iOS camera permission testing urgency)
+- Phone scanning requires HTTPS — camera is gated by getUserMedia browser security policy. Must have Railway HTTPS before May 29 door test. Deferred to Phase 6.
+- Rate limiting on /api/scan (UUID enumeration prevention) — deferred to Phase 6 (SEC-04)
 
 ## Deferred Items
 
