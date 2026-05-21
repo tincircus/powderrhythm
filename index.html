@@ -241,6 +241,132 @@
     .section-content {
       /* Phase 8 populates internal layout */
     }
+
+    /* ───── SHOWS SECTION ───── */
+
+    .show-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .show-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(0, 255, 204, 0.15);
+      transition: border-color 0.15s;
+    }
+
+    .show-card:last-child {
+      border-bottom: none;
+    }
+
+    .show-card:hover {
+      border-bottom-color: rgba(0, 255, 204, 0.35);
+    }
+
+    .show-artist {
+      font-family: 'Permanent Marker', cursive;
+      font-size: 1.3rem;
+      line-height: 1.2;
+      color: var(--snow-white);
+    }
+
+    .show-meta {
+      font-family: 'Boogaloo', cursive;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      color: rgba(240, 248, 255, 0.65);
+      letter-spacing: 0.05em;
+    }
+
+    .show-tickets {
+      display: inline-block;
+      margin-top: 0.25rem;
+      font-family: 'Boogaloo', cursive;
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--neon-teal);
+      text-decoration: underline;
+      text-decoration-color: rgba(0, 255, 204, 0.4);
+      text-underline-offset: 3px;
+      transition: color 0.15s, text-decoration-color 0.15s;
+    }
+
+    .show-tickets:hover {
+      color: var(--neon-yellow);
+      text-decoration-color: var(--neon-yellow);
+    }
+
+    .show-empty {
+      font-family: 'Special Elite', cursive;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: rgba(240, 248, 255, 0.45);
+      font-style: italic;
+    }
+
+    /* ───── CONTACT SECTION ───── */
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .contact-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .contact-label {
+      font-family: 'Boogaloo', cursive;
+      font-size: 0.75rem;
+      line-height: 1;
+      color: var(--neon-teal);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 0.25rem;
+    }
+
+    .contact-value {
+      font-family: 'Special Elite', cursive;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: rgba(240, 248, 255, 0.85);
+    }
+
+    .contact-crossstreet {
+      font-size: 0.85rem;
+      color: rgba(240, 248, 255, 0.45);
+    }
+
+    .contact-link {
+      color: var(--neon-teal);
+      text-decoration: underline;
+      text-decoration-color: rgba(0, 255, 204, 0.4);
+      text-underline-offset: 3px;
+      transition: color 0.15s, text-decoration-color 0.15s;
+    }
+
+    .contact-link:hover {
+      color: var(--neon-yellow);
+      text-decoration-color: var(--neon-yellow);
+    }
+
+    @media (max-width: 600px) {
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 
@@ -258,7 +384,7 @@
   <!-- TOP MARQUEE -->
   <div class="marquee-wrap">
     <span class="marquee-inner">
-      🎵 POWDER RHYTHM 🎵 RECORD STORE &amp; MUSIC VENUE 🎵 BAKER CITY, OREGON 🎵 POWDER RHYTHM 🎵 RECORD STORE &amp; MUSIC VENUE 🎵 BAKER CITY, OREGON 🎵
+      🎵 MAY 29 🎵 UTILITY 🎵 ROLLER DOME 🎵 AFTER SCHOOL SPECIAL 🎵 LIVE AT POWDER RHYTHM 🎵 MAY 29 🎵 UTILITY 🎵 ROLLER DOME 🎵 AFTER SCHOOL SPECIAL 🎵 LIVE AT POWDER RHYTHM 🎵
     </span>
   </div>
 
