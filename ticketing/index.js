@@ -2,6 +2,20 @@
 
 require('dotenv').config();
 
+// Validate APP_URL at startup — it is used in Square redirect URL construction (CR-01)
+(function validateAppUrl() {
+  const appUrl = process.env.APP_URL;
+  try {
+    const parsed = new URL(appUrl);
+    if (parsed.protocol !== 'https:' && process.env.NODE_ENV === 'production') {
+      throw new Error('APP_URL must use https in production');
+    }
+  } catch {
+    console.error('Invalid APP_URL:', appUrl);
+    process.exit(1);
+  }
+})();
+
 const express = require('express');
 const path = require('path');
 const db = require('./src/db/knex');
