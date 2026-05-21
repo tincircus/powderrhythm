@@ -99,7 +99,11 @@ router.post('/:id/checkout', async (req, res) => {
     paymentLink = response.paymentLink;
   } catch (err) {
     // Square API failed — clean up pending row to avoid orphaned records (Pitfall 6)
-    await db('tickets').where({ uuid }).delete();
+    try {
+      await db('tickets').where({ uuid }).delete();
+    } catch (cleanupErr) {
+      console.error('Failed to clean up orphaned pending ticket:', uuid, cleanupErr);
+    }
     return res.status(500).render('error', {
       message: 'Something went wrong starting checkout. Try again or contact us.',
     });
