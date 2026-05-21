@@ -30,16 +30,14 @@ exports.up = async function (knex) {
   });
 
   // Seed event — D-10, D-11
-  // TODO: Update price_cents and capacity before Phase 6 production deploy
-  //       once real values are confirmed with the venue.
   const count = await knex('events').count('id as n').first();
   if (parseInt(count.n, 10) === 0) {
     await knex('events').insert({
       name: 'Powder Rhythm Launch',
       date: '2026-05-29 20:00:00',
       venue: 'Powder Rhythm, Baker City, OR',
-      price_cents: 2000, // PLACEHOLDER — $20
-      capacity: 50,      // PLACEHOLDER
+      price_cents: 2000,
+      capacity: 50,
       description: null,
     });
   }
