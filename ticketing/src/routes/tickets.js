@@ -42,4 +42,26 @@ router.get('/ticket/:uuid', async (req, res) => {
   res.render('ticket', { ticket });
 });
 
+// GET /ticket/:uuid/qr.png
+// Streams a QR code PNG encoding the full ticket URL for the given confirmed ticket.
+// Returns 404 for unknown or non-confirmed UUIDs.
+// select('uuid') only — no PII (buyer_name, buyer_email) needed here.
+// T-03-06 mitigation: res.on('error') attached before streaming to prevent server crash
+// when buyer navigates away mid-stream. QRCode.toFileStream emits errors on the passed
+// stream (res), not as a return value — res is the correct error event source.
+router.get('/ticket/:uuid/qr.png', async (req, res) => {
+  const { uuid } = req.params;
+  const ticket = await db('tickets').select('uuid').where({ uuid, status: 'confirmed' }).first();
+  if (!ticket) return res.status(404).end();
+  const APP_URL = process.env.APP_URL || 'http://localhost:3000';
+  const qrUrl = `${APP_URL}/ticket/${ticket.uuid}`;
+  res.type('image/png');
+  res.setHeader('Content-Disposition', `attachment; filename="ticket-${uuid}.png"`);
+  res.on('error', (err) => {
+    console.error('QR stream error:', err);
+    if (!res.headersSent) res.status(500).end();
+  });
+  QRCode.toFileStream(res, qrUrl, { width: 300, margin: 2, errorCorrectionLevel: 'M' });
+});
+
 module.exports = router;
