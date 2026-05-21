@@ -4,11 +4,21 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db/knex');
 const { makeAuthMiddleware, makeToken, compareStrings, COOKIE_MAX_AGE } = require('../middleware/auth');
+const rateLimit = require('express-rate-limit');
 
 const COOKIE_NAME    = 'scan_auth';
 const UUID_RE        = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 const requireScanAuth = makeAuthMiddleware('scan_auth');
+
+// SEC-04: rate limit scan endpoint to prevent UUID enumeration
+const scanRateLimiter = rateLimit({
+  windowMs: 60 * 1000,           // 1 minute window (D-04)
+  limit: 60,                     // 60 req/min/IP — v8 API, not deprecated 'max' (D-04)
+  message: { error: 'Too many requests' }, // matches JSON error shape (D-05)
+  standardHeaders: true,         // emit RateLimit-* headers (RFC 9110 draft-8)
+  legacyHeaders: false,          // suppress deprecated X-RateLimit-*
+});
 
 // GET /scan — password-gated camera UI
 router.get('/scan', requireScanAuth, (req, res) => {
@@ -41,7 +51,7 @@ router.post('/scan/login', (req, res) => {
 // POST /api/scan — atomic ticket check-in endpoint (SEC-03)
 // Inline auth check returns 401 JSON (not redirect) so browser fetch() can parse the error.
 // Uses UPDATE WHERE scanned_at IS NULL — exactly one concurrent request gets rowsAffected === 1.
-router.post('/api/scan', async (req, res) => {
+router.post('/api/scan', scanRateLimiter, async (req, res) => {
   try {
     // Step 1 — Inline auth check (T-4-08: fetch()-compatible 401 JSON)
     const password = process.env.ADMIN_PASSWORD;

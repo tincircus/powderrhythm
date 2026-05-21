@@ -205,6 +205,19 @@ describe('POST /api/scan', () => {
         assert.ok(r.body.scannedAt, 'should include scannedAt');
     });
 
+    test('returns 429 after 60 rapid requests from same IP', async () => {
+        // Fire 61 rapid POST requests without cookie (auth check runs after rate check).
+        // The rate limiter acts on IP before the handler body executes, so no cookie needed.
+        // After 60 requests the 61st must receive 429.
+        const UUID = '00000000-0000-4000-a000-000000000000';
+        let last;
+        for (let i = 0; i < 61; i++) {
+            last = await post('/api/scan', { uuid: UUID }, validCookie);
+        }
+        assert.equal(last.status, 429);
+        assert.deepEqual(last.body, { error: 'Too many requests' });
+    });
+
 });
 
 // ============================================================================
