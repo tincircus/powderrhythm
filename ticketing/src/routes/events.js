@@ -52,23 +52,27 @@ router.post('/:id/checkout', async (req, res) => {
   const event = await db('events').where({ id: eventId }).first();
   if (!event) return res.status(404).json({ error: 'Event not found' });
 
-  // Capacity pre-check (D-08: confirmed only — pending rows don't consume capacity)
-  const confirmedCount = await db('tickets')
-    .where({ event_id: event.id, status: 'confirmed' })
-    .count('id as n')
-    .first()
-    .then((r) => parseInt(r.n, 10));
-  if (confirmedCount >= event.capacity) return res.redirect(`/events/${eventId}?error=soldout`);
-
-  // Create pending ticket row (D-03)
+  // Atomically check capacity and insert pending ticket to prevent TOCTOU oversell (CR-02)
   const uuid = randomUUID();
-  await db('tickets').insert({
-    uuid,
-    event_id: event.id,
-    buyer_name: name.trim(),
-    buyer_email: email.trim().toLowerCase(),
-    status: 'pending',
+  let soldOut = false;
+  await db.transaction(async (trx) => {
+    const { n } = await trx('tickets')
+      .where({ event_id: event.id, status: 'confirmed' })
+      .count('id as n')
+      .first();
+    if (parseInt(n, 10) >= event.capacity) {
+      soldOut = true;
+      return;
+    }
+    await trx('tickets').insert({
+      uuid,
+      event_id: event.id,
+      buyer_name: name.trim(),
+      buyer_email: email.trim().toLowerCase(),
+      status: 'pending',
+    });
   });
+  if (soldOut) return res.redirect(`/events/${eventId}?error=soldout`);
 
   // Create Square payment link
   const redirectUrl = `${process.env.APP_URL}/ticket/pending?uuid=${uuid}`;
