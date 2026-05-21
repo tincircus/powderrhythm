@@ -4,7 +4,18 @@ const path = require('path');
 const knex = require('knex');
 
 const db = knex(
-  process.env.DATABASE_URL
+  process.env.DATABASE_PRIVATE_URL
+    ? {
+        client: 'pg',
+        connection: {
+          connectionString: process.env.DATABASE_PRIVATE_URL,
+          ssl: false, // Railway private network uses Wireguard — no TLS needed (D-02)
+        },
+        migrations: {
+          directory: path.join(__dirname, 'migrations'),
+        },
+      }
+    : process.env.DATABASE_URL
     ? {
         client: 'pg',
         connection: {
