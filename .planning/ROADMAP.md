@@ -229,13 +229,13 @@ Plans:
 4. The contact section displays the physical address, cross-street, store/venue hours, and a phone number or email address (CONT-01, CONT-02, CONT-04)
 5. The contact section includes at minimum a working Instagram link (CONT-03)
 
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
 
 **Wave 1**
 
-- [ ] 08-01-PLAN.md — All show and contact CSS classes in style block; top marquee updated with event-announcement copy (all 3 bands + May 29)
+- [x] 08-01-PLAN.md — All show and contact CSS classes in style block; top marquee updated with event-announcement copy (all 3 bands + May 29)
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
@@ -258,4 +258,4 @@ Website redesign phases execute independently: 7 → 8
 | 5. Admin Panel | 0/2 | Not started | - |
 | 6. Production Hardening | 0/2 | Not started | - |
 | 7. Strip and Rebuild Layout | 2/2 | Complete   | 2026-05-21 |
-| 8. Business Content | 0/2 | Not started | - |
+| 8. Business Content | 1/2 | In Progress|  |

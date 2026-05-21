@@ -4,12 +4,12 @@ milestone: v1.1
 milestone_name: — Website Redesign
 status: executing
 stopped_at: Phase 8 context gathered
-last_updated: "2026-05-21T13:49:23.563Z"
-last_activity: 2026-05-21 -- Phase 05 execution started
+last_updated: "2026-05-21T14:02:48.404Z"
+last_activity: 2026-05-21 -- Phase 08 execution started
 progress:
   total_phases: 8
   completed_phases: 6
-  total_plans: 14
+  total_plans: 16
   completed_plans: 14
   percent: 75
 ---
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-14)
 
 **Core value:** A buyer can purchase a ticket and present a valid QR code at the door without any friction — no account, no app, no email required.
-**Current focus:** Phase 05 — admin-panel
+**Current focus:** Phase 08 — business-content
 
 ## Current Position
 
-Phase: 05 (admin-panel) — EXECUTING
+Phase: 08 (business-content) — EXECUTING
 Plan: 1 of 2
-Status: Executing Phase 05
-Last activity: 2026-05-21 -- Phase 05 execution started
+Status: Executing Phase 08
+Last activity: 2026-05-21 -- Phase 08 execution started
 
 ## Performance Metrics
 
