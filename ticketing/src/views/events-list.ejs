@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shows — Powder Rhythm Tickets</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Fredoka+One&family=Permanent+Marker&family=Special+Elite&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+        --deep-purple: #1a0033;
+        --neon-teal:   #00ffcc;
+        --neon-pink:   #ff00cc;
+        --neon-yellow: #ffff00;
+        --hot-pink:    #ff4da6;
+        --snow-white:  #f0f8ff;
+    }
+
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: var(--deep-purple);
+        background-image:
+            radial-gradient(ellipse at 20% 50%, rgba(0, 255, 204, 0.08) 0%, transparent 60%),
+            radial-gradient(ellipse at 80% 20%, rgba(255, 0, 204, 0.08) 0%, transparent 60%);
+        color: var(--snow-white);
+        font-family: 'Special Elite', cursive;
+        margin: 0;
+        padding: 48px 16px 64px;
+        min-height: 100vh;
+    }
+
+    .page-wrapper {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    h1.page-title {
+        font-family: 'Permanent Marker', cursive;
+        font-size: 2rem;
+        color: var(--neon-teal);
+        margin: 0 0 32px;
+        line-height: 1.1;
+    }
+
+    .events-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .event-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(0, 255, 204, 0.2);
+        border-radius: 12px;
+        padding: 16px;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .event-card:hover {
+        border-color: rgba(0, 255, 204, 0.5);
+    }
+
+    .event-card--sold-out {
+        opacity: 0.6;
+    }
+
+    .card-poster {
+        width: 110px;
+        height: 110px;
+        object-fit: cover;
+        border-radius: 8px;
+        flex-shrink: 0;
+    }
+
+    .card-details {
+        flex: 1;
+    }
+
+    .card-name {
+        font-family: 'Fredoka One', cursive;
+        font-size: 1.25rem;
+        line-height: 1.2;
+        color: var(--snow-white);
+        margin: 0 0 4px;
+    }
+
+    .card-date {
+        font-family: 'Boogaloo', sans-serif;
+        font-size: 0.9rem;
+        color: rgba(240, 248, 255, 0.8);
+        margin: 0 0 4px;
+    }
+
+    .card-venue {
+        font-family: 'Special Elite', cursive;
+        font-size: 0.9rem;
+        color: var(--neon-teal);
+        margin: 0 0 4px;
+    }
+
+    .card-price {
+        font-family: 'Fredoka One', cursive;
+        font-size: 1rem;
+        color: var(--neon-yellow);
+        margin: 0 0 8px;
+    }
+
+    .capacity-badge {
+        font-family: 'Boogaloo', sans-serif;
+        font-size: 0.85rem;
+        line-height: 1.3;
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .capacity-badge.available { color: var(--neon-teal); }
+
+    .capacity-badge.seats-left { color: var(--hot-pink); }
+
+    .capacity-badge.sold-out {
+        color: var(--neon-pink);
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    .get-tickets-btn {
+        display: inline-block;
+        text-decoration: none;
+        background: transparent;
+        border: 2px solid var(--neon-teal);
+        border-radius: 8px;
+        color: var(--neon-teal);
+        font-family: 'Fredoka One', cursive;
+        font-size: 1.1rem;
+        padding: 8px 24px;
+        min-height: 44px;
+        cursor: pointer;
+        margin-top: 8px;
+        text-shadow: 0 0 8px rgba(0, 255, 204, 0.6);
+        box-shadow: 0 0 12px rgba(0, 255, 204, 0.2);
+        transition: box-shadow 0.15s, background 0.15s;
+    }
+
+    .get-tickets-btn:hover {
+        background: rgba(0, 255, 204, 0.1);
+        box-shadow: 0 0 12px rgba(0, 255, 204, 0.3);
+    }
+
+    .get-tickets-btn:focus {
+        outline: 3px solid var(--neon-teal);
+        outline-offset: 4px;
+    }
+
+    button.get-tickets-btn[disabled] {
+        border-color: var(--neon-pink);
+        color: var(--neon-pink);
+        background: rgba(255, 0, 204, 0.08);
+        cursor: not-allowed;
+        text-shadow: none;
+        box-shadow: none;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 48px 16px;
+        color: rgba(240, 248, 255, 0.6);
+        font-family: 'Special Elite', cursive;
+        font-size: 1.1rem;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 32px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(0, 255, 204, 0.15);
+    }
+
+    .pagination-link {
+        font-family: 'Boogaloo', sans-serif;
+        font-size: 1rem;
+        color: var(--neon-teal);
+        text-decoration: none;
+    }
+
+    .pagination-link:hover {
+        text-decoration: underline;
+    }
+
+    .pagination-link--next {
+        margin-left: auto;
+    }
+
+    @media (max-width: 560px) {
+        .event-card {
+            flex-direction: column;
+        }
+
+        .card-poster {
+            width: 100%;
+            height: auto;
+            max-height: 200px;
+        }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+    <h1 class="page-title">Upcoming Shows</h1>
+    <div class="events-list">
+      <% if (events.length === 0) { %>
+        <div class="empty-state">
+          <p>No upcoming shows. Check back soon.</p>
+        </div>
+      <% } else { %>
+        <% events.forEach(function(event) { %>
+          <div class="event-card<%= event.isSoldOut ? ' event-card--sold-out' : '' %>">
+            <img
+              class="card-poster"
+              src="/posters/event-<%= event.id %>.jpg"
+              alt="<%= event.name %> show poster"
+              onerror="this.style.display='none'"
+            />
+            <div class="card-details">
+              <h2 class="card-name"><%= event.name %></h2>
+              <p class="card-date"><%= new Date(event.date + 'Z').toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'America/Los_Angeles' }) %></p>
+              <p class="card-venue"><%= event.venue %></p>
+              <p class="card-price">$<%= (event.price_cents / 100).toFixed(0) %></p>
+              <span class="capacity-badge <%= event.badgeClass %>"><%= event.badgeLabel %></span>
+              <% if (event.isSoldOut) { %>
+                <button type="button" class="get-tickets-btn" disabled>Sold Out</button>
+              <% } else { %>
+                <a href="/events/<%= event.id %>" class="get-tickets-btn">Get Tickets</a>
+              <% } %>
+            </div>
+          </div>
+        <% }); %>
+      <% } %>
+    </div>
+    <nav class="pagination">
+      <% if (pagination.hasPrev) { %>
+        <a href="/?page=<%= pagination.page - 1 %>" class="pagination-link">&#8592; Previous</a>
+      <% } %>
+      <% if (pagination.hasNext) { %>
+        <a href="/?page=<%= pagination.page + 1 %>" class="pagination-link pagination-link--next">Next &#8594;</a>
+      <% } %>
+    </nav>
+  </div>
+</body>
+</html>
