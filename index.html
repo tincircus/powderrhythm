@@ -468,6 +468,7 @@
         {
             artist: 'Utility (+ Roller Dome, After School Special)',
             date: 'Fri, May 29, 2026',
+            dateIso: '2026-05-29',
             venue: 'Powder Rhythm',
             ticketUrl: 'https://tickets.powderrhythm.com/events/1'
         }
@@ -477,12 +478,15 @@
         var container = document.querySelector('#shows .section-content');
         if (!container) return;
 
-        if (!SHOWS || SHOWS.length === 0) {
+        var today = new Date().toISOString().slice(0, 10);
+        var upcoming = (SHOWS || []).filter(function (s) { return s.dateIso >= today; });
+
+        if (upcoming.length === 0) {
             container.innerHTML = '<p class="show-empty">No upcoming shows. Check back soon.</p>';
             return;
         }
 
-        var items = SHOWS.map(function (show) {
+        var items = upcoming.map(function (show) {
             var ticketsHtml = (show.ticketUrl && isSafeUrl(show.ticketUrl))
                 ? '<a class="show-tickets" href="' + escHtml(show.ticketUrl) + '" target="_blank" rel="noopener noreferrer" aria-label="Get tickets for ' + escHtml(show.artist) + '">Get Tickets</a>'
                 : '';
