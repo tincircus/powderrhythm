@@ -197,13 +197,13 @@ Replace the personal blog with a clean business presence for Powder Rhythm. The 
 4. The navigation links point to `#shows` and `#contact` only — no stale blog anchors (VIS-02)
 5. The page is readable on a phone screen with no horizontal scroll or layout breakage (VIS-03)
 
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
 
 **Wave 1**
 
-- [ ] 07-01-PLAN.md — Remove all blog/widget HTML, update head/nav/header/marquee/footer copy, add section skeletons, remove script block
+- [x] 07-01-PLAN.md — Remove all blog/widget HTML, update head/nav/header/marquee/footer copy, add section skeletons, remove script block
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
@@ -241,5 +241,5 @@ Website redesign phases execute independently: 7 → 8
 | 4. Door Scanner | 2/2 | Complete   | 2026-05-21 |
 | 5. Admin Panel | 0/2 | Not started | - |
 | 6. Production Hardening | 0/2 | Not started | - |
-| 7. Strip and Rebuild Layout | 0/2 | Not started | - |
+| 7. Strip and Rebuild Layout | 1/2 | In Progress|  |
 | 8. Business Content | 0/? | Not started | - |
