@@ -49,11 +49,13 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal server error' });
 });
 
+let server;
+
 async function start() {
   try {
     await db.migrate.latest();
     console.log('Migrations complete');
-    app.listen(PORT, () => {
+    server = app.listen(PORT, () => {
       console.log(`Listening on port ${PORT}`);
     });
   } catch (err) {
@@ -61,5 +63,24 @@ async function start() {
     process.exit(1);
   }
 }
+
+function shutdown(signal) {
+  console.log(`${signal} received — shutting down gracefully`);
+  const timer = setTimeout(() => {
+    console.error('Graceful shutdown timed out — forcing exit');
+    process.exit(0);
+  }, 10_000);
+
+  server.close(() => {
+    clearTimeout(timer);
+    db.destroy().then(() => {
+      console.log('DB pool closed — exiting');
+      process.exit(0);
+    }).catch(() => process.exit(0));
+  });
+}
+
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT', () => shutdown('SIGINT'));
 
 start();
