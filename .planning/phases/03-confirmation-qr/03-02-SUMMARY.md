@@ -38,7 +38,7 @@ GET /ticket/:uuid/qr.png endpoint streaming 300x300 PNG QR code with Content-Dis
 - **Duration:** 3 min
 - **Started:** 2026-05-20T23:47:41Z
 - **Completed:** 2026-05-20T23:51:18Z
-- **Tasks:** 1 of 2 (Task 2 is checkpoint:human-verify, awaiting human verification)
+- **Tasks:** 2 of 2
 - **Files modified:** 1
 
 ## Accomplishments
@@ -52,7 +52,7 @@ GET /ticket/:uuid/qr.png endpoint streaming 300x300 PNG QR code with Content-Dis
 
 1. **Task 1: Add GET /ticket/:uuid/qr.png endpoint** - `e646248` (feat)
 
-Task 2 is a checkpoint:human-verify — awaiting human verification (see Checkpoint section below).
+2. **Task 2: Verify QR code scans correctly on a real device** - checkpoint:human-verify — APPROVED by human reviewer.
 
 ## Files Created/Modified
 
@@ -94,17 +94,16 @@ Automated tests against live server (worktree with confirmed ticket in DB):
 - The worktree does not have node_modules installed (worktrees share source but not node_modules). Created a temporary symlink to the main repo's node_modules for testing, removed after verification.
 - Worktree has a separate dev.sqlite with no seed data. Populated it programmatically for testing.
 
-## Checkpoint Reached: Task 2
+## Checkpoint: Task 2 - Human Verification
 
 **Type:** human-verify
 **Gate:** blocking
+**Result:** APPROVED
 
-Task 2 requires human verification that:
-1. The confirmation page at /ticket/:uuid renders with QR image
-2. The QR code scans on a real phone and encodes the correct URL
-3. The download link saves a PNG file named ticket-{uuid}.png
-
-See PLAN.md Task 2 for full verification steps.
+Human-verified checks (all passed):
+1. Confirmation page at /ticket/:uuid renders with QR image
+2. QR code scans on a real device and encodes the correct full URL
+3. Download link saves a PNG file named ticket-{uuid}.png
 
 ## Known Stubs
 
@@ -119,7 +118,7 @@ None — no new security surface beyond the plan's threat model.
 - GET /ticket/:uuid/qr.png is fully implemented and tested
 - Full confirmation flow (pending -> /ticket/:uuid -> QR display -> download) is complete
 - Phase 4 scanner can read the QR URL (full navigable URL encoded, not bare UUID)
-- Awaiting human verification checkpoint before proceeding to Phase 4
+- Human verification checkpoint cleared (approved)
 
 ---
 *Phase: 03-confirmation-qr*
