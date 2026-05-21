@@ -188,6 +188,16 @@ Plans:
 
 - [ ] 06-02-PLAN.md — scanRateLimiter on POST /api/scan (SEC-04), 429 regression test, Railway env vars + Square production webhook ops checkpoint
 
+### Phase 9: 9 --name event-routing-and-posters --goal "The ticket link on the main site reaches a working event page, the event page shows a show poster, and the system is ready to add future events without a routing change." --depends-on 8 --requirements SHOW-03
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 8
+**Plans:** 1/2 plans executed
+
+Plans:
+- [ ] TBD (run /gsd-plan-phase 9 to break down)
+
 ---
 
 ## Milestone v1.1 — Website Redesign
@@ -248,6 +258,56 @@ Plans:
 
 **UI hint**: yes
 
+### Phase 9: Event Routing and Posters
+
+**Goal:** The ticket link on the main site reaches a working event page, the event page shows a show poster, and the system is ready to add future events without a routing change.
+**Depends on:** Phase 8
+**Requirements:** SHOW-03
+**Success Criteria:**
+
+1. `GET /events/:id` renders the correct event page; `https://tickets.powderrhythm.com/events/1` does not 404 (fixes the broken ticket link from Phase 8)
+2. `POST /events/:id/checkout` starts the Square checkout flow for the correct event
+3. `event.ejs` displays the show poster image
+4. The poster image is served from `ticketing/public/posters/` as a Railway-accessible static asset
+5. Poster images are organized in a `posters/` folder at the repo root for use by the main site
+6. Adding a new event requires only: a new DB row + a new SHOWS entry in `index.html` — no route changes needed
+
+**Plans:** 2 plans
+
+Plans:
+
+**Wave 1**
+
+- [x] 09-01-PLAN.md — Refactor events router to GET /events/:id + POST /events/:id/checkout; update form action in event.ejs; remount router at /events with root redirect (SC1, SC2, SC6)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 09-02-PLAN.md — express.static middleware, ticketing/public/posters/ directory, poster img in event.ejs, posters/ at repo root (SC3, SC4, SC5)
+
+**UI hint**: yes
+
+### Phase 10: Events Listing Page
+
+**Goal:** The bare ticketing subdomain shows a paginated list of upcoming events with per-event availability indicators and a direct purchase button on each entry.
+**Mode:** mvp
+**Depends on:** Phase 9
+**Requirements:** (none — internal improvement)
+**Success Criteria:**
+
+1. `GET /` renders an events listing page showing all future events ordered by date ascending; the root redirect from Phase 9 is replaced by this handler
+2. Each event card displays: name, date, venue, and all-in price
+3. Availability badge: shows "X left" (exact count) when fewer than 10 confirmed tickets remain; shows "Available" when 10 or more remain; shows "Sold Out" (card disabled) when at capacity
+4. Each event card has a "Get Tickets" button linking to `/events/:id`; the button is disabled and reads "Sold Out" when the event is at capacity
+5. When no upcoming events exist, the page shows an empty state: "No upcoming shows. Check back soon."
+6. Results are paginated at 20 events per page; a `?page=N` query parameter advances pages; next/prev links are shown only when applicable
+
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd-plan-phase 10 to break down)
+
+**UI hint**: yes
+
 ## Progress
 
 **Execution Order:**
@@ -264,3 +324,5 @@ Website redesign phases execute independently: 7 → 8
 | 6. Production Hardening | 0/2 | Not started | - |
 | 7. Strip and Rebuild Layout | 2/2 | Complete   | 2026-05-21 |
 | 8. Business Content | 2/2 | Complete   | 2026-05-21 |
+| 9. Event Routing and Posters | 1/2 | In Progress|  |
+| 10. Events Listing Page | 0/0 | Not started | - |
