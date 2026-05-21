@@ -28,6 +28,7 @@ const eventsRouter   = require('./src/routes/events');   // GET /events/:id, POS
 const webhooksRouter = require('./src/routes/webhooks'); // POST /webhooks/square
 const ticketsRouter  = require('./src/routes/tickets');  // GET /ticket/pending, GET /api/ticket-status
 
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/webhooks', webhooksRouter);  // mount before '/' to avoid catch-all match issues
 app.get('/', (req, res) => res.redirect(302, '/events/1'));
 app.use('/events', eventsRouter);
