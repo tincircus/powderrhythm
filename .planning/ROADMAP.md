@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [ ] **Phase 1: Foundation** - Database module, full schema, startup migrations, and health check
 - [x] **Phase 2: Square Integration** - Event page, checkout redirect, webhook processing, pending page, and all webhook security (completed 2026-05-14)
-- [ ] **Phase 3: Confirmation + QR** - Permanent ticket page with QR code display, PNG download, and no-email warning
+- [x] **Phase 3: Confirmation + QR** - Permanent ticket page with QR code display, PNG download, and no-email warning (completed 2026-05-21)
 - [ ] **Phase 4: Door Scanner** - Password-protected scan page, camera QR scanning, atomic scan endpoint, green/red feedback
 - [ ] **Phase 5: Admin Panel** - Attendee list, live headcount, manual check-in, and name search
 - [ ] **Phase 6: Production Hardening** - Railway deployment, Postgres config, rate limiting, go-live verification
@@ -91,7 +91,7 @@ Plans:
 3. Buyer can download the QR code as a PNG file directly from the confirmation page (CONF-03)
 4. The confirmation page explicitly tells the buyer no email will be sent and instructs them to save or bookmark the page (CONF-04)
 
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 **Wave 1**
@@ -100,7 +100,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 03-02-PLAN.md — GET /ticket/:uuid/qr.png PNG endpoint with streaming, Content-Disposition header, stream error handling (CONF-03)
+- [x] 03-02-PLAN.md — GET /ticket/:uuid/qr.png PNG endpoint with streaming, Content-Disposition header, stream error handling (CONF-03)
 
 **UI hint**: yes
 
@@ -178,7 +178,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 |-------|----------------|--------|-----------|
 | 1. Foundation | 0/2 | Not started | - |
 | 2. Square Integration | 4/4 | Complete    | 2026-05-20 |
-| 3. Confirmation + QR | 1/2 | In Progress|  |
+| 3. Confirmation + QR | 2/2 | Complete   | 2026-05-21 |
 | 4. Door Scanner | 0/2 | Not started | - |
 | 5. Admin Panel | 0/2 | Not started | - |
 | 6. Production Hardening | 0/2 | Not started | - |
