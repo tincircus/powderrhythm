@@ -96,14 +96,17 @@ router.get('/api/scan/search', async (req, res) => {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    // Step 2 — Empty query short-circuit (no DB round-trip)
+    // Step 2 — Minimum-length guard (mirrors client-side check; also blocks bare % / _ terms)
     const q = req.query.q;
-    if (!q || q.trim().length === 0) {
+    if (!q || q.trim().length < 2) {
       return res.json([]);
     }
 
-    // Step 3 — Sanitize
+    // Step 3 — Sanitize and escape LIKE metacharacters (WR-03)
+    // Escaping % and _ prevents a single-character wildcard query from dumping all rows.
+    // The backslash escape works on both SQLite and Postgres with ESCAPE '\\'.
     const term = q.trim();
+    const safeTerm = term.replace(/[%_\\]/g, '\\$&');
 
     // Step 4 — Case-insensitive name/email match with parameterized LIKE (T-4-11)
     // whereILike maps to ILIKE on Postgres and LIKE on SQLite (ASCII case-insensitive by default).
@@ -113,8 +116,8 @@ router.get('/api/scan/search', async (req, res) => {
         .select('uuid', 'buyer_name', 'buyer_email', 'scanned_at')
         .where({ status: 'confirmed' })
         .andWhere(function () {
-          this.whereILike('buyer_name', '%' + term + '%')
-              .orWhereILike('buyer_email', '%' + term + '%');
+          this.whereILike('buyer_name', '%' + safeTerm + '%')
+              .orWhereILike('buyer_email', '%' + safeTerm + '%');
         })
         .limit(20);
     } catch (iLikeErr) {
@@ -123,8 +126,8 @@ router.get('/api/scan/search', async (req, res) => {
         .select('uuid', 'buyer_name', 'buyer_email', 'scanned_at')
         .where({ status: 'confirmed' })
         .andWhere(function () {
-          this.whereRaw('LOWER(buyer_name) LIKE ?', ['%' + term.toLowerCase() + '%'])
-              .orWhereRaw('LOWER(buyer_email) LIKE ?', ['%' + term.toLowerCase() + '%']);
+          this.whereRaw('LOWER(buyer_name) LIKE ? ESCAPE \'\\\\\'', ['%' + safeTerm.toLowerCase() + '%'])
+              .orWhereRaw('LOWER(buyer_email) LIKE ? ESCAPE \'\\\\\'', ['%' + safeTerm.toLowerCase() + '%']);
         })
         .limit(20);
     }
