@@ -118,11 +118,11 @@ Plans:
 4. An already-scanned ticket shows full-screen red with the time it was first scanned (SCAN-03)
 5. The scan endpoint uses an atomic `UPDATE ... WHERE scanned_at IS NULL` so two simultaneous scans of the same ticket cannot both succeed (SEC-03)
 
-**Plans:** TBD
+**Plans:** 1/2 plans executed
 
 Plans:
 
-- [ ] 04-01: GET /scan — password gate and qr-scanner (nimiq) camera UI
+- [x] 04-01: GET /scan — password gate and qr-scanner (nimiq) camera UI
 - [ ] 04-02: POST /api/scan — atomic scan endpoint, green/red response, full-screen feedback UI
 
 **UI hint**: yes
@@ -179,6 +179,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. Foundation | 0/2 | Not started | - |
 | 2. Square Integration | 4/4 | Complete    | 2026-05-20 |
 | 3. Confirmation + QR | 2/2 | Complete   | 2026-05-21 |
-| 4. Door Scanner | 0/2 | Not started | - |
+| 4. Door Scanner | 1/2 | In Progress|  |
 | 5. Admin Panel | 0/2 | Not started | - |
 | 6. Production Hardening | 0/2 | Not started | - |
