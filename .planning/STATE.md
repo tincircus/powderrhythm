@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: — Website Redesign
-status: verifying
-stopped_at: context exhaustion at 75% (2026-05-21)
-last_updated: "2026-05-21T17:36:18.469Z"
-last_activity: 2026-05-21
+status: complete
+stopped_at: Phase 10 complete — events listing page live at GET /
+last_updated: "2026-05-21T00:00:00.000Z"
+last_activity: "2026-05-21 — Phase 10 complete: events listing page replacing root redirect"
 progress:
   total_phases: 10
-  completed_phases: 9
-  total_plans: 20
-  completed_plans: 20
-  percent: 90
+  completed_phases: 10
+  total_plans: 21
+  completed_plans: 21
+  percent: 100
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-14)
 
 **Core value:** A buyer can purchase a ticket and present a valid QR code at the door without any friction — no account, no app, no email required.
-**Current focus:** Phase 09 — event-routing-and-posters (complete)
+**Current focus:** Phase 10 — events-listing-page (complete)
 
 ## Current Position
 
-Phase: 09 (event-routing-and-posters) — EXECUTING
-Plan: 2 of 2
-Status: Phase complete — ready for verification
-Last activity: 2026-05-21
+Phase: 10 (events-listing-page) — COMPLETE
+Plan: 1 of 1
+Status: All phases complete — milestone v1.1 done
+Last activity: 2026-05-21 — Phase 10 complete: DB-driven events listing page at GET /
 
 ## Performance Metrics
 
@@ -74,9 +74,15 @@ Recent decisions affecting current work:
 
 None yet.
 
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 260521-f5n | Change default event capacity from 50 to 20 in the seed migration | 2026-05-21 | 008bfc7 | [260521-f5n-update-event-capacity](.planning/quick/260521-f5n-update-event-capacity/) |
+
 ### Blockers/Concerns
 
-- Need May 29 event capacity from venue before seeding the `events` table (Phase 1)
+- ~~Need May 29 event capacity from venue before seeding the `events` table (Phase 1)~~ Resolved: capacity set to 20.
 - Phone scanning requires HTTPS — camera is gated by getUserMedia browser security policy. Must have Railway HTTPS before May 29 door test. Deferred to Phase 6.
 - Rate limiting on /api/scan (UUID enumeration prevention) — deferred to Phase 6 (SEC-04)
 
@@ -92,6 +98,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-21T17:36:18.464Z
-Stopped at: Completed 09-02-PLAN.md (2026-05-21)
-Resume file: None
+Last session: 2026-05-21T18:55:00.000Z
+Stopped at: Phase 10 complete — all milestone v1.1 phases done
+Resume file: —

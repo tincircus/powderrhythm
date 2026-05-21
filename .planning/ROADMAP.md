@@ -182,11 +182,11 @@ Plans:
 
 **Wave 1**
 
-- [ ] 06-01-PLAN.md — express-rate-limit install, knex.js three-branch Postgres config, SIGTERM graceful shutdown, .env.example update
+- [x] 06-01-PLAN.md — express-rate-limit install, knex.js three-branch Postgres config, SIGTERM graceful shutdown, .env.example update (completed 2026-05-21)
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 06-02-PLAN.md — scanRateLimiter on POST /api/scan (SEC-04), 429 regression test, Railway env vars + Square production webhook ops checkpoint
+- [x] 06-02-PLAN.md — scanRateLimiter on POST /api/scan (SEC-04), 429 regression test, Railway env vars + Square production webhook ops checkpoint (completed 2026-05-21)
 
 ### Phase 9: 9 --name event-routing-and-posters --goal "The ticket link on the main site reaches a working event page, the event page shows a show poster, and the system is ready to add future events without a routing change." --depends-on 8 --requirements SHOW-03
 
@@ -301,10 +301,13 @@ Plans:
 5. When no upcoming events exist, the page shows an empty state: "No upcoming shows. Check back soon."
 6. Results are paginated at 20 events per page; a `?page=N` query parameter advances pages; next/prev links are shown only when applicable
 
-**Plans:** 0 plans
+**Plans:** 1 plan
 
 Plans:
-- [ ] TBD (run /gsd-plan-phase 10 to break down)
+
+**Wave 1**
+
+- [x] 10-01-PLAN.md — listing.js GET / handler (pagination, GROUP BY confirmed counts, 3-tier badge), events-list.ejs template, replace index.js root redirect (SC1–SC6)
 
 **UI hint**: yes
 
@@ -325,4 +328,4 @@ Website redesign phases execute independently: 7 → 8
 | 7. Strip and Rebuild Layout | 2/2 | Complete   | 2026-05-21 |
 | 8. Business Content | 2/2 | Complete   | 2026-05-21 |
 | 9. Event Routing and Posters | 2/2 | Complete   | 2026-05-21 |
-| 10. Events Listing Page | 0/0 | Not started | - |
+| 10. Events Listing Page | 1/1 | Complete   | 2026-05-21 |
