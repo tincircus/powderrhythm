@@ -201,7 +201,7 @@
 
     <!-- Buy form card -->
     <div class="buy-form-card">
-      <form action="/checkout" method="POST">
+      <form action="/events/<%= event.id %>/checkout" method="POST">
         <div class="form-group">
           <label for="name">Your name</label>
           <input
