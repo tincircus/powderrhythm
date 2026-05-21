@@ -39,4 +39,101 @@ router.post('/scan/login', (req, res) => {
   return res.redirect('/scan');
 });
 
+// POST /api/scan — atomic ticket check-in endpoint (SEC-03)
+// Inline auth check returns 401 JSON (not redirect) so browser fetch() can parse the error.
+// Uses UPDATE WHERE scanned_at IS NULL — exactly one concurrent request gets rowsAffected === 1.
+router.post('/api/scan', async (req, res) => {
+  try {
+    // Step 1 — Inline auth check (T-4-08: fetch()-compatible 401 JSON)
+    const password = process.env.ADMIN_PASSWORD;
+    const token = req.cookies[COOKIE_NAME];
+    if (!password || !token || !compareStrings(token, makeToken(password))) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    // Step 2 — UUID validation
+    const { uuid } = req.body;
+    if (!uuid || !UUID_RE.test(uuid)) {
+      return res.status(400).json({ error: 'Invalid uuid' });
+    }
+
+    // Step 3 — Atomic UPDATE (SEC-03, T-4-07)
+    // whereNull('scanned_at') ensures only one concurrent request succeeds.
+    // No .returning() chained — preserves cross-DB integer rows-affected result (Pitfall 6).
+    const rowsAffected = await db('tickets')
+      .where({ uuid })
+      .whereNull('scanned_at')
+      .update({ scanned_at: db.fn.now() });
+
+    if (rowsAffected === 1) {
+      // Step 4 — Fetch buyer name for green display (no email — T-4-09)
+      const ticket = await db('tickets').select('buyer_name').where({ uuid }).first();
+      return res.json({ ok: true, name: ticket.buyer_name });
+    }
+
+    // Step 5 — rowsAffected === 0: already scanned or not found
+    const ticket = await db('tickets').select('buyer_name', 'scanned_at').where({ uuid }).first();
+    if (!ticket) {
+      return res.json({ ok: false, reason: 'not_found' });
+    }
+    return res.json({ ok: false, reason: 'already_scanned', scannedAt: ticket.scanned_at });
+  } catch (err) {
+    console.error('POST /api/scan error:', err);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// GET /api/scan/search — name/email lookup fallback (D-06)
+// Auth-gated via inline cookie check (same pattern as POST /api/scan).
+// Returns confirmed tickets matching buyer_name or buyer_email (case-insensitive), limit 20.
+router.get('/api/scan/search', async (req, res) => {
+  try {
+    // Step 1 — Inline auth check
+    const password = process.env.ADMIN_PASSWORD;
+    const token = req.cookies[COOKIE_NAME];
+    if (!password || !token || !compareStrings(token, makeToken(password))) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    // Step 2 — Empty query short-circuit (no DB round-trip)
+    const q = req.query.q;
+    if (!q || q.trim().length === 0) {
+      return res.json([]);
+    }
+
+    // Step 3 — Sanitize
+    const term = q.trim();
+
+    // Step 4 — Case-insensitive name/email match with parameterized LIKE (T-4-11)
+    // whereILike maps to ILIKE on Postgres and LIKE on SQLite (ASCII case-insensitive by default).
+    let rows;
+    try {
+      rows = await db('tickets')
+        .select('uuid', 'buyer_name', 'buyer_email', 'scanned_at')
+        .where({ status: 'confirmed' })
+        .andWhere(function () {
+          this.whereILike('buyer_name', '%' + term + '%')
+              .orWhereILike('buyer_email', '%' + term + '%');
+        })
+        .limit(20);
+    } catch (iLikeErr) {
+      // Fallback for older Knex versions that lack whereILike
+      rows = await db('tickets')
+        .select('uuid', 'buyer_name', 'buyer_email', 'scanned_at')
+        .where({ status: 'confirmed' })
+        .andWhere(function () {
+          this.whereRaw('LOWER(buyer_name) LIKE ?', ['%' + term.toLowerCase() + '%'])
+              .orWhereRaw('LOWER(buyer_email) LIKE ?', ['%' + term.toLowerCase() + '%']);
+        })
+        .limit(20);
+    }
+
+    // Step 5 — Return results (limit already applied)
+    return res.json(rows);
+  } catch (err) {
+    console.error('GET /api/scan/search error:', err);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 module.exports = router;
