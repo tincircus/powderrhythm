@@ -252,16 +252,23 @@
             const r = await fetch('/api/scan/search?q=' + encodeURIComponent(q));
             if (!r.ok) { searchResults.innerHTML = ''; return; }
             const items = await r.json();
-            searchResults.innerHTML = items.map(t =>
-                '<li><span>' + t.buyer_name + ' — ' + t.buyer_email + '</span><button class="checkin-btn" data-uuid="' + t.uuid + '">Check In</button></li>'
-            ).join('');
-            searchResults.querySelectorAll('.checkin-btn').forEach(btn => {
+            searchResults.innerHTML = '';   // clear safely (CR-02)
+            items.forEach(t => {
+                const li   = document.createElement('li');
+                const span = document.createElement('span');
+                span.textContent = t.buyer_name + ' — ' + t.buyer_email;
+                const btn  = document.createElement('button');
+                btn.className = 'checkin-btn';
+                btn.dataset.uuid = t.uuid;
+                btn.textContent = 'Check In';
                 btn.addEventListener('click', async () => {
                     if (busy) return;
                     busy = true;
                     scanner.stop();
                     await handleScan(btn.dataset.uuid);
                 });
+                li.append(span, btn);
+                searchResults.appendChild(li);
             });
         } catch (_) {}
     });
