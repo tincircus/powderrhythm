@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 1: Foundation** - Database module, full schema, startup migrations, and health check
 - [x] **Phase 2: Square Integration** - Event page, checkout redirect, webhook processing, pending page, and all webhook security (completed 2026-05-14)
 - [x] **Phase 3: Confirmation + QR** - Permanent ticket page with QR code display, PNG download, and no-email warning (completed 2026-05-21)
-- [ ] **Phase 4: Door Scanner** - Password-protected scan page, camera QR scanning, atomic scan endpoint, green/red feedback
+- [x] **Phase 4: Door Scanner** - Password-protected scan page, camera QR scanning, atomic scan endpoint, green/red feedback (completed 2026-05-21)
 - [ ] **Phase 5: Admin Panel** - Attendee list, live headcount, manual check-in, and name search
 - [ ] **Phase 6: Production Hardening** - Railway deployment, Postgres config, rate limiting, go-live verification
 
@@ -118,12 +118,12 @@ Plans:
 4. An already-scanned ticket shows full-screen red with the time it was first scanned (SCAN-03)
 5. The scan endpoint uses an atomic `UPDATE ... WHERE scanned_at IS NULL` so two simultaneous scans of the same ticket cannot both succeed (SEC-03)
 
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 
 - [x] 04-01: GET /scan — password gate and qr-scanner (nimiq) camera UI
-- [ ] 04-02: POST /api/scan — atomic scan endpoint, green/red response, full-screen feedback UI
+- [x] 04-02: POST /api/scan — atomic scan endpoint, green/red response, full-screen feedback UI
 
 **UI hint**: yes
 
@@ -179,6 +179,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. Foundation | 0/2 | Not started | - |
 | 2. Square Integration | 4/4 | Complete    | 2026-05-20 |
 | 3. Confirmation + QR | 2/2 | Complete   | 2026-05-21 |
-| 4. Door Scanner | 1/2 | In Progress|  |
+| 4. Door Scanner | 2/2 | Complete   | 2026-05-21 |
 | 5. Admin Panel | 0/2 | Not started | - |
 | 6. Production Hardening | 0/2 | Not started | - |
