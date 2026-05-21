@@ -39,7 +39,7 @@ router.get('/admin', requireAdminAuth, async (req, res) => {
     const attendees = await db('tickets')
       .where({ status: 'confirmed' })
       .orderBy('buyer_name', 'asc')
-      .select('uuid', 'buyer_name', 'email', 'scanned_at');
+      .select('uuid', 'buyer_name', 'buyer_email', 'scanned_at');
 
     const checkedIn = attendees.filter(t => t.scanned_at !== null).length;
     const totalSold = attendees.length;

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Powder Rhythm</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Fredoka+One&family=Permanent+Marker&family=Special+Elite&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+        --deep-purple: #1a0033;
+        --neon-teal:   #00ffcc;
+        --neon-pink:   #ff00cc;
+        --neon-yellow: #ffff00;
+        --hot-pink:    #ff4da6;
+        --snow-white:  #f0f8ff;
+    }
+
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: var(--deep-purple);
+        background-image:
+            radial-gradient(ellipse at 20% 50%, rgba(0, 255, 204, 0.08) 0%, transparent 60%),
+            radial-gradient(ellipse at 80% 20%, rgba(255, 0, 204, 0.08) 0%, transparent 60%);
+        color: var(--snow-white);
+        font-family: 'Special Elite', cursive;
+        margin: 0;
+        padding: 0 16px;
+        min-height: 100vh;
+    }
+
+    .page-container {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 48px 0 64px;
+    }
+
+    h1 {
+        font-family: 'Permanent Marker', cursive;
+        font-size: 2.5rem;
+        color: var(--neon-teal);
+        margin: 0 0 8px;
+    }
+
+    .headcount-banner {
+        background: rgba(255,255,255,0.05);
+        border-bottom: 1px solid rgba(0,255,204,0.3);
+        padding: 16px 24px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 32px;
+    }
+
+    .headcount-label {
+        font-family: 'Boogaloo', sans-serif;
+        font-size: 0.85rem;
+        color: rgba(240,248,255,0.6);
+    }
+
+    .headcount-num {
+        font-family: 'Fredoka One', cursive;
+        font-size: 1.5rem;
+        color: var(--neon-teal);
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: 'Special Elite', cursive;
+        font-size: 1rem;
+    }
+
+    th {
+        font-family: 'Boogaloo', sans-serif;
+        font-size: 0.85rem;
+        color: rgba(240,248,255,0.6);
+        text-align: left;
+        padding: 8px 16px;
+        border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+
+    td {
+        padding: 8px 16px;
+    }
+
+    tr {
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .badge-checked {
+        display: inline-block;
+        background: #00c853;
+        color: #000;
+        font-family: 'Boogaloo', sans-serif;
+        font-size: 0.85rem;
+        padding: 2px 8px;
+        border-radius: 4px;
+        white-space: nowrap;
+    }
+
+    .badge-unchecked {
+        display: inline-block;
+        background: rgba(255,255,255,0.15);
+        color: var(--snow-white);
+        font-family: 'Boogaloo', sans-serif;
+        font-size: 0.85rem;
+        padding: 2px 8px;
+        border-radius: 4px;
+        white-space: nowrap;
+    }
+
+    .scan-time {
+        font-family: 'Boogaloo', sans-serif;
+        font-size: 0.85rem;
+        color: rgba(240,248,255,0.6);
+    }
+
+    .checkin-btn {
+        font-family: 'Boogaloo', sans-serif;
+        font-size: 0.85rem;
+        color: var(--neon-teal);
+        border: 1px solid var(--neon-teal);
+        border-radius: 6px;
+        background: transparent;
+        padding: 4px 12px;
+        min-height: 44px;
+        cursor: pointer;
+    }
+
+    .checkin-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .done-label {
+        font-family: 'Boogaloo', sans-serif;
+        font-size: 0.85rem;
+        color: rgba(240,248,255,0.4);
+    }
+
+    #search-input {
+        width: 100%;
+        background: rgba(255,255,255,0.07);
+        border: 1px solid var(--neon-teal);
+        border-radius: 8px;
+        color: var(--snow-white);
+        font-family: 'Special Elite', cursive;
+        font-size: 1rem;
+        padding: 8px 16px;
+        min-height: 44px;
+        margin-bottom: 16px;
+    }
+
+    #search-input:focus,
+    .checkin-btn:focus {
+        outline: 3px solid var(--neon-teal);
+        outline-offset: 4px;
+    }
+
+    .empty-state {
+        padding-top: 48px;
+        text-align: center;
+    }
+
+    .empty-state h2 {
+        font-family: 'Fredoka One', cursive;
+        font-size: 1.5rem;
+        color: rgba(240,248,255,0.5);
+        margin: 0 0 8px;
+    }
+
+    .empty-state p {
+        font-family: 'Boogaloo', sans-serif;
+        font-size: 0.85rem;
+        color: rgba(240,248,255,0.4);
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <h1>Admin</h1>
+
+    <div class="headcount-banner">
+      <span class="headcount-label">Checked in</span>
+      <span class="headcount-num"><%= checkedIn %> / <%= totalSold %></span>
+      <span class="headcount-label">attendees confirmed</span>
+    </div>
+
+    <label for="search-input">Search attendees</label>
+    <input type="text" id="search-input" placeholder="Search by name" />
+
+    <% if (attendees.length === 0) { %>
+      <div class="empty-state">
+        <h2>No confirmed attendees yet</h2>
+        <p>Tickets will appear here once payments are confirmed.</p>
+      </div>
+    <% } else { %>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Status</th>
+              <th scope="col">Scan Time</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody id="attendee-tbody">
+            <% attendees.forEach(function(ticket) { %>
+              <tr data-name="<%= ticket.buyer_name.toLowerCase() %>">
+                <td><%= ticket.buyer_name %></td>
+                <td style="font-family: 'Boogaloo', sans-serif; font-size: 0.85rem; color: rgba(240,248,255,0.7);"><%= ticket.buyer_email %></td>
+                <td>
+                  <% if (ticket.scanned_at !== null) { %>
+                    <span class="badge-checked">Checked in</span>
+                  <% } else { %>
+                    <span class="badge-unchecked">Not checked in</span>
+                  <% } %>
+                </td>
+                <td class="scan-time">
+                  <% if (ticket.scanned_at !== null) { %>
+                    <span data-scan-time="<%= ticket.scanned_at %>"><%= ticket.scanned_at %></span>
+                  <% } else { %>
+                    &#8212;
+                  <% } %>
+                </td>
+                <td>
+                  <% if (ticket.scanned_at === null) { %>
+                    <button class="checkin-btn" data-uuid="<%= ticket.uuid %>" aria-label="Check in <%= ticket.buyer_name %>">Check In</button>
+                  <% } else { %>
+                    <span class="done-label">Done</span>
+                  <% } %>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+  </div>
+
+  <!-- JS: search + check-in interaction added in Plan 02 -->
+</body>
+</html>

@@ -30,6 +30,7 @@ app.use('/webhooks', webhooksRouter);  // mount before '/' to avoid catch-all ma
 app.use('/', eventsRouter);
 app.use('/', ticketsRouter);
 app.use('/', require('./src/routes/scan'));
+app.use('/', require('./src/routes/admin'));
 
 // GET /health — DB connectivity check
 app.get('/health', async (req, res) => {
