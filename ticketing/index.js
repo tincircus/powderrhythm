@@ -38,13 +38,14 @@ app.use(express.json({
 app.use(express.urlencoded({ extended: false }));
 app.use(require('cookie-parser')());
 
+const listingRouter  = require('./src/routes/listing');  // GET / — events listing page
 const eventsRouter   = require('./src/routes/events');   // GET /events/:id, POST /events/:id/checkout
 const webhooksRouter = require('./src/routes/webhooks'); // POST /webhooks/square
 const ticketsRouter  = require('./src/routes/tickets');  // GET /ticket/pending, GET /api/ticket-status
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/webhooks', webhooksRouter);  // mount before '/' to avoid catch-all match issues
-app.get('/', (req, res) => res.redirect(302, '/events/1'));
+app.use('/', listingRouter);
 app.use('/events', eventsRouter);
 app.use('/', ticketsRouter);
 app.use('/', require('./src/routes/scan'));
