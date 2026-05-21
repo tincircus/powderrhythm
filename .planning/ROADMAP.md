@@ -26,7 +26,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 ### Milestone v1.1 — Website Redesign
 
-- [ ] **Phase 7: Strip and Rebuild Layout** - Remove all blog content and interactive widgets; rebuild page structure with Powder Rhythm visual identity and updated navigation
+- [x] **Phase 7: Strip and Rebuild Layout** - Remove all blog content and interactive widgets; rebuild page structure with Powder Rhythm visual identity and updated navigation (completed 2026-05-21)
 - [ ] **Phase 8: Business Content** - Shows section with JS-driven rendering and contact/location section
 
 ## Phase Details
@@ -197,7 +197,7 @@ Replace the personal blog with a clean business presence for Powder Rhythm. The 
 4. The navigation links point to `#shows` and `#contact` only — no stale blog anchors (VIS-02)
 5. The page is readable on a phone screen with no horizontal scroll or layout breakage (VIS-03)
 
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 
@@ -207,7 +207,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 07-02-PLAN.md — CSS purge: remove dead styles for removed elements; add .site-section, .section-title, .section-content rules
+- [x] 07-02-PLAN.md — CSS purge: remove dead styles for removed elements; add .site-section, .section-title, .section-content rules
 
 **UI hint**: yes
 
@@ -241,5 +241,5 @@ Website redesign phases execute independently: 7 → 8
 | 4. Door Scanner | 2/2 | Complete   | 2026-05-21 |
 | 5. Admin Panel | 0/2 | Not started | - |
 | 6. Production Hardening | 0/2 | Not started | - |
-| 7. Strip and Rebuild Layout | 1/2 | In Progress|  |
+| 7. Strip and Rebuild Layout | 2/2 | Complete   | 2026-05-21 |
 | 8. Business Content | 0/? | Not started | - |
