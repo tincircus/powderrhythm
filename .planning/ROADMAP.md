@@ -4,6 +4,8 @@
 
 Six phases take the ticketing system from a bare database schema to a production-hardened app live before the May 29 venue launch. Each phase delivers a coherent, verifiable slice of capability: Phase 1 establishes the data foundation, Phase 2 closes the first purchase end-to-end, Phase 3 puts a QR code in the buyer's hands, Phase 4 gives door staff a working scanner, Phase 5 gives the venue admin visibility and a manual fallback, and Phase 6 hardens everything for Railway production.
 
+Two additional phases (7–8) cover milestone v1.1: replacing the personal blog with a clean business presence on the static main site.
+
 ## Phases
 
 **Phase Numbering:**
@@ -13,12 +15,19 @@ Six phases take the ticketing system from a bare database schema to a production
 
 Decimal phases appear between their surrounding integers in numeric order.
 
+### Milestone v1.0 — Ticketing
+
 - [ ] **Phase 1: Foundation** - Database module, full schema, startup migrations, and health check
 - [x] **Phase 2: Square Integration** - Event page, checkout redirect, webhook processing, pending page, and all webhook security (completed 2026-05-14)
 - [x] **Phase 3: Confirmation + QR** - Permanent ticket page with QR code display, PNG download, and no-email warning (completed 2026-05-21)
 - [x] **Phase 4: Door Scanner** - Password-protected scan page, camera QR scanning, atomic scan endpoint, green/red feedback (completed 2026-05-21)
 - [ ] **Phase 5: Admin Panel** - Attendee list, live headcount, manual check-in, and name search
 - [ ] **Phase 6: Production Hardening** - Railway deployment, Postgres config, rate limiting, go-live verification
+
+### Milestone v1.1 — Website Redesign
+
+- [ ] **Phase 7: Strip and Rebuild Layout** - Remove all blog content and interactive widgets; rebuild page structure with Powder Rhythm visual identity and updated navigation
+- [ ] **Phase 8: Business Content** - Shows section with JS-driven rendering and contact/location section
 
 ## Phase Details
 
@@ -169,10 +178,60 @@ Plans:
 - [ ] 06-01: Railway environment config, Postgres connection (DATABASE_PRIVATE_URL, SSL), graceful SIGTERM shutdown
 - [ ] 06-02: Rate limiting on /api/scan, production Square webhook registration, end-to-end mobile verification
 
+---
+
+## Milestone v1.1 — Website Redesign
+
+Replace the personal blog with a clean business presence for Powder Rhythm. The site (`index.html`) is a single static file — no build step, no server. Two phases: strip the blog content and rebuild the layout skeleton, then populate the business sections.
+
+### Phase 7: Strip and Rebuild Layout
+
+**Goal:** The site is a clean, identity-consistent shell with no blog content — existing visual identity preserved, navigation updated, interactive widgets gone.
+**Depends on:** Nothing (independent track from Phase 6)
+**Requirements:** CLEAN-01, CLEAN-02, CLEAN-03, VIS-01, VIS-02, VIS-03
+**Success Criteria:**
+
+1. Opening `index.html` in a browser shows no blog entries, no evidence board, no brick wall teardown, and no count-up timer (CLEAN-01, CLEAN-02)
+2. No snowflakes or star particles appear on the page — the background is clean (CLEAN-03)
+3. The existing Google Fonts (Special Elite, Permanent Marker, Fredoka One, Boogaloo) and neon color palette are present and render correctly (VIS-01)
+4. The navigation links point to `#shows` and `#contact` only — no stale blog anchors (VIS-02)
+5. The page is readable on a phone screen with no horizontal scroll or layout breakage (VIS-03)
+
+**Plans:** 2 plans
+
+Plans:
+
+**Wave 1**
+
+- [ ] 07-01-PLAN.md — Remove all blog/widget HTML, update head/nav/header/marquee/footer copy, add section skeletons, remove script block
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 07-02-PLAN.md — CSS purge: remove dead styles for removed elements; add .site-section, .section-title, .section-content rules
+
+**UI hint**: yes
+
+### Phase 8: Business Content
+
+**Goal:** A visitor can find upcoming shows with ticket links and all the contact/location information they need to get to the venue.
+**Depends on:** Phase 7
+**Requirements:** SHOW-01, SHOW-02, SHOW-03, SHOW-04, CONT-01, CONT-02, CONT-03, CONT-04
+**Success Criteria:**
+
+1. Adding a show object to the JavaScript array and reloading the page renders it in the shows section with artist name, date, and venue name — no HTML editing required (SHOW-01, SHOW-02)
+2. A show with a `ticketUrl` displays a "Get Tickets" link; a show without one displays no link at all (SHOW-03)
+3. When the shows array is empty, the shows section displays "No upcoming shows — check back soon" (SHOW-04)
+4. The contact section displays the physical address, cross-street, store/venue hours, and a phone number or email address (CONT-01, CONT-02, CONT-04)
+5. The contact section includes at minimum a working Instagram link (CONT-03)
+
+**Plans:** TBD
+**UI hint**: yes
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
+Ticketing phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
+Website redesign phases execute independently: 7 → 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -182,3 +241,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 4. Door Scanner | 2/2 | Complete   | 2026-05-21 |
 | 5. Admin Panel | 0/2 | Not started | - |
 | 6. Production Hardening | 0/2 | Not started | - |
+| 7. Strip and Rebuild Layout | 0/2 | Not started | - |
+| 8. Business Content | 0/? | Not started | - |
