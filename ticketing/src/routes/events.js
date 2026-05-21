@@ -49,6 +49,9 @@ router.post('/:id/checkout', async (req, res) => {
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
     return res.redirect(`/events/${eventId}?error=email`);
   }
+  // Upper-bound length guards (WR-03) — prevent unbounded storage and display issues
+  if (name.trim().length > 200) return res.redirect(`/events/${eventId}?error=name`);
+  if (email.trim().length > 254) return res.redirect(`/events/${eventId}?error=email`);
 
   const event = await db('events').where({ id: eventId }).first();
   if (!event) return res.status(404).json({ error: 'Event not found' });
