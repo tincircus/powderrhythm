@@ -6,10 +6,14 @@ const router = express.Router();
 const db = require('../db/knex');
 const squareClient = require('../lib/square');
 
-// GET / — render event page with live capacity display
+// GET /events/:id, POST /events/:id/checkout
 // Express 5: async handler — errors auto-forwarded to global error handler
-router.get('/', async (req, res) => {
-  const event = await db('events').first();
+router.get('/:id', async (req, res) => {
+  const eventId = parseInt(req.params.id, 10);
+  if (isNaN(eventId)) return res.status(404).json({ error: 'Event not found' });
+
+  const event = await db('events').where({ id: eventId }).first();
+  if (!event) return res.status(404).json({ error: 'Event not found' });
   const confirmedCount = await db('tickets')
     .where({ event_id: event.id, status: 'confirmed' })
     .count('id as n')
@@ -31,18 +35,22 @@ router.get('/', async (req, res) => {
   res.render('event', { event, confirmedCount, capacityLabel, isSoldOut });
 });
 
-// POST /checkout — validate input, create pending ticket, redirect to Square
+// POST /events/:id/checkout — validate input, create pending ticket, redirect to Square
 // Express 5: async handler — errors forwarded except the explicit Square API try/catch
-router.post('/checkout', async (req, res) => {
+router.post('/:id/checkout', async (req, res) => {
+  const eventId = parseInt(req.params.id, 10);
+  if (isNaN(eventId)) return res.status(404).json({ error: 'Event not found' });
+
   const { name, email } = req.body;
 
   // Input validation — return to event page with error on failure
-  if (!name || !name.trim()) return res.redirect('/?error=name');
+  if (!name || !name.trim()) return res.redirect(`/events/${eventId}?error=name`);
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-    return res.redirect('/?error=email');
+    return res.redirect(`/events/${eventId}?error=email`);
   }
 
-  const event = await db('events').first();
+  const event = await db('events').where({ id: eventId }).first();
+  if (!event) return res.status(404).json({ error: 'Event not found' });
 
   // Capacity pre-check (D-08: confirmed only — pending rows don't consume capacity)
   const confirmedCount = await db('tickets')
@@ -50,7 +58,7 @@ router.post('/checkout', async (req, res) => {
     .count('id as n')
     .first()
     .then((r) => parseInt(r.n, 10));
-  if (confirmedCount >= event.capacity) return res.redirect('/?error=soldout');
+  if (confirmedCount >= event.capacity) return res.redirect(`/events/${eventId}?error=soldout`);
 
   // Create pending ticket row (D-03)
   const uuid = randomUUID();
