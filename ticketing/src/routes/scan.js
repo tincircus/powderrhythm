@@ -11,14 +11,16 @@ const UUID_RE        = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-
 
 const requireScanAuth = makeAuthMiddleware('scan_auth');
 
-// SEC-04: rate limit scan endpoint to prevent UUID enumeration
-const scanRateLimiter = rateLimit({
+// SEC-04: rate limit scan endpoints to prevent UUID/email enumeration
+const rateLimiterConfig = {
   windowMs: 60 * 1000,           // 1 minute window (D-04)
   limit: 60,                     // 60 req/min/IP — v8 API, not deprecated 'max' (D-04)
   message: { error: 'Too many requests' }, // matches JSON error shape (D-05)
   standardHeaders: true,         // emit RateLimit-* headers (RFC 9110 draft-8)
   legacyHeaders: false,          // suppress deprecated X-RateLimit-*
-});
+};
+const scanRateLimiter   = rateLimit(rateLimiterConfig); // separate store per endpoint
+const searchRateLimiter = rateLimit(rateLimiterConfig); // (prevents test cross-contamination)
 
 // GET /scan — password-gated camera UI
 router.get('/scan', requireScanAuth, (req, res) => {
@@ -97,7 +99,7 @@ router.post('/api/scan', scanRateLimiter, async (req, res) => {
 // GET /api/scan/search — name/email lookup fallback (D-06)
 // Auth-gated via inline cookie check (same pattern as POST /api/scan).
 // Returns confirmed tickets matching buyer_name or buyer_email (case-insensitive), limit 20.
-router.get('/api/scan/search', async (req, res) => {
+router.get('/api/scan/search', searchRateLimiter, async (req, res) => {
   try {
     // Step 1 — Inline auth check
     const password = process.env.ADMIN_PASSWORD;

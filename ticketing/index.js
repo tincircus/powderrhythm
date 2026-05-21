@@ -9,6 +9,8 @@ const db = require('./src/db/knex');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.set('trust proxy', 1); // Railway edge proxy — use X-Forwarded-For[0] as real client IP
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src/views'));
 
@@ -68,10 +70,11 @@ function shutdown(signal) {
   console.log(`${signal} received — shutting down gracefully`);
   const timer = setTimeout(() => {
     console.error('Graceful shutdown timed out — forcing exit');
-    process.exit(0);
+    process.exit(1); // abnormal termination — let Railway restart the container
   }, 10_000);
 
-  server.close(() => {
+  const closeServer = server ? (cb) => server.close(cb) : (cb) => cb();
+  closeServer(() => {
     clearTimeout(timer);
     db.destroy().then(() => {
       console.log('DB pool closed — exiting');

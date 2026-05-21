@@ -206,9 +206,9 @@ describe('POST /api/scan', () => {
     });
 
     test('returns 429 after 60 rapid requests from same IP', async () => {
-        // Fire 61 rapid POST requests without cookie (auth check runs after rate check).
-        // The rate limiter acts on IP before the handler body executes, so no cookie needed.
-        // After 60 requests the 61st must receive 429.
+        // Fire 61 rapid POST requests with valid cookie. Rate limiter runs before auth,
+        // so prior tests in this suite have consumed some slots — this loop still reaches
+        // 429 well within 61 iterations. After 60 total req/min the next must be 429.
         const UUID = '00000000-0000-4000-a000-000000000000';
         let last;
         for (let i = 0; i < 61; i++) {
