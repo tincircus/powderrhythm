@@ -218,7 +218,7 @@
       />
       <h1 class="event-name"><%= event.name %></h1>
       <p class="event-date">
-        <%= new Date(event.date + 'Z').toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'America/Boise' }) %>
+        <%= new Date(event.date + 'Z').toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'America/Los_Angeles' }) %>
       </p>
       <p class="event-venue"><%= event.venue %></p>
       <p class="event-price">$<%= (event.price_cents / 100).toFixed(0) %></p>
