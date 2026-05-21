@@ -193,10 +193,10 @@ Plans:
 **Goal:** [To be planned]
 **Requirements**: TBD
 **Depends on:** Phase 8
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
-- [ ] TBD (run /gsd-plan-phase 9 to break down)
+- [x] TBD (run /gsd-plan-phase 9 to break down) (completed 2026-05-21)
 
 ---
 
@@ -282,7 +282,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 09-02-PLAN.md — express.static middleware, ticketing/public/posters/ directory, poster img in event.ejs, posters/ at repo root (SC3, SC4, SC5)
+- [x] 09-02-PLAN.md — express.static middleware, ticketing/public/posters/ directory, poster img in event.ejs, posters/ at repo root (SC3, SC4, SC5)
 
 **UI hint**: yes
 
@@ -324,5 +324,5 @@ Website redesign phases execute independently: 7 → 8
 | 6. Production Hardening | 0/2 | Not started | - |
 | 7. Strip and Rebuild Layout | 2/2 | Complete   | 2026-05-21 |
 | 8. Business Content | 2/2 | Complete   | 2026-05-21 |
-| 9. Event Routing and Posters | 1/2 | In Progress|  |
+| 9. Event Routing and Posters | 2/2 | Complete   | 2026-05-21 |
 | 10. Events Listing Page | 0/0 | Not started | - |

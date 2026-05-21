@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: — Website Redesign
-status: executing
+status: verifying
 stopped_at: context exhaustion at 75% (2026-05-21)
-last_updated: "2026-05-21T17:31:46.202Z"
+last_updated: "2026-05-21T17:36:18.469Z"
 last_activity: 2026-05-21
 progress:
   total_phases: 10
-  completed_phases: 8
+  completed_phases: 9
   total_plans: 20
-  completed_plans: 19
-  percent: 80
+  completed_plans: 20
+  percent: 90
 ---
 
 # Project State
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-14)
 
 **Core value:** A buyer can purchase a ticket and present a valid QR code at the door without any friction — no account, no app, no email required.
-**Current focus:** Phase 09 — event-routing-and-posters
+**Current focus:** Phase 09 — event-routing-and-posters (complete)
 
 ## Current Position
 
 Phase: 09 (event-routing-and-posters) — EXECUTING
 Plan: 2 of 2
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-05-21
 
 ## Performance Metrics
@@ -67,6 +67,8 @@ Recent decisions affecting current work:
 - Init: Shared password auth (no JWT/sessions) — venue staff is 1-2 people
 - Phase 4: HTTPS required on phones for getUserMedia — camera works on Mac over HTTP; phone scanning requires Railway HTTPS (Phase 6)
 - Phase 4: Atomic UPDATE WHERE status='confirmed' AND scanned_at IS NULL — prevents both race condition and unpaid ticket admission
+- Phase 09-02: express.static mounted before webhooks router — ensures static files served without routing interference
+- Phase 09-02: Poster filename convention event-{id}.jpg derived from DB event ID — no schema change needed
 
 ### Pending Todos
 
@@ -90,6 +92,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-21T17:31:46.199Z
-Stopped at: context exhaustion at 75% (2026-05-21)
+Last session: 2026-05-21T17:36:18.464Z
+Stopped at: Completed 09-02-PLAN.md (2026-05-21)
 Resume file: None
