@@ -379,6 +379,8 @@
     <span class="nav-sep">|</span>
     <a href="#shows">Shows</a>
     <span class="nav-sep">|</span>
+    <a href="#past-shows">Past Shows</a>
+    <span class="nav-sep">|</span>
     <a href="#contact">Find Us</a>
   </nav>
 
@@ -408,6 +410,11 @@
           <p class="show-empty">JavaScript is required to display upcoming shows.</p>
         </noscript>
       </div>
+    </section>
+
+    <section id="past-shows" class="site-section">
+      <h2 class="section-title">PAST SHOWS</h2>
+      <div class="section-content"></div>
     </section>
 
     <section id="contact" class="site-section">
@@ -497,6 +504,32 @@
           + '<span class="show-artist">' + escHtml(show.artist) + '</span>'
           + '<span class="show-meta">' + escHtml(show.date) + ' &bull; ' + escHtml(show.venue) + '</span>'
           + ticketsHtml
+          + '</li>';
+      }).join('');
+
+      container.innerHTML = '<ul class="show-list" role="list">' + items + '</ul>';
+    }());
+
+    (function () {
+      var section = document.querySelector('#past-shows');
+      var container = document.querySelector('#past-shows .section-content');
+      if (!container) return;
+
+      var today = new Date().toISOString().slice(0, 10);
+      var past = (SHOWS || [])
+        .filter(function (s) { return s.dateIso < today; })
+        .sort(function (a, b) { return a.dateIso < b.dateIso ? 1 : (a.dateIso > b.dateIso ? -1 : 0); })
+        .slice(0, 6);
+
+      if (past.length === 0) {
+        if (section) section.style.display = 'none';
+        return;
+      }
+
+      var items = past.map(function (show) {
+        return '<li class="show-card">'
+          + '<span class="show-artist">' + escHtml(show.artist) + '</span>'
+          + '<span class="show-meta">' + escHtml(show.date) + ' &bull; ' + escHtml(show.venue) + '</span>'
           + '</li>';
       }).join('');
 
