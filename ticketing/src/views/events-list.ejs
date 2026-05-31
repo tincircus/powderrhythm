@@ -73,6 +73,14 @@
         opacity: 0.6;
     }
 
+    .event-card--past {
+        opacity: 0.7;
+    }
+
+    .event-card--past:hover {
+        border-color: rgba(0, 255, 204, 0.2);
+    }
+
     .card-poster {
         width: 56px;
         height: 56px;
@@ -256,6 +264,26 @@
         <a href="/?page=<%= pagination.page + 1 %>" class="pagination-link pagination-link--next">Next &#8594;</a>
       <% } %>
     </nav>
+    <% if (pastEvents && pastEvents.length > 0) { %>
+      <h1 class="page-title">Past Shows</h1>
+      <div class="events-list">
+        <% pastEvents.forEach(function(event) { %>
+          <div class="event-card event-card--past">
+            <img
+              class="card-poster"
+              src="/posters/event-<%= event.id %>.jpg"
+              alt="<%= event.name %> show poster"
+              onerror="this.style.display='none'"
+            />
+            <div class="card-details">
+              <h2 class="card-name"><%= event.name %></h2>
+              <p class="card-date"><%= new Date(event.date + 'Z').toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'America/Los_Angeles' }) %></p>
+              <p class="card-venue"><%= event.venue %></p>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } %>
   </div>
 </body>
 </html>

@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
     const page = Math.max(1, parseInt(req.query.page, 10) || 1);
     const offset = (page - 1) * PAGE_SIZE;
 
-    const [events, countResult] = await Promise.all([
+    const [events, countResult, pastEvents] = await Promise.all([
       db('events')
         .whereRaw('date > CURRENT_TIMESTAMP')
         .orderBy('date', 'asc')
@@ -22,6 +22,10 @@ router.get('/', async (req, res) => {
         .whereRaw('date > CURRENT_TIMESTAMP')
         .count('id as n')
         .first(),
+      db('events')
+        .whereRaw('date <= CURRENT_TIMESTAMP')
+        .orderBy('date', 'desc')
+        .limit(6),
     ]);
 
     const totalCount = parseInt(countResult.n, 10);
@@ -61,6 +65,7 @@ router.get('/', async (req, res) => {
 
     res.render('events-list', {
       events: decoratedEvents,
+      pastEvents,
       pagination: {
         page,
         totalPages,
