@@ -50,6 +50,7 @@ app.use('/events', eventsRouter);
 app.use('/', ticketsRouter);
 app.use('/', require('./src/routes/scan'));
 app.use('/', require('./src/routes/admin'));
+app.use('/', require('./src/routes/team'));    // GET /team/* — password-gated team docs
 
 // GET /health — DB connectivity check
 app.get('/health', async (req, res) => {

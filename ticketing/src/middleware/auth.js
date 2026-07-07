@@ -25,18 +25,19 @@ function compareStrings(a, b) {
 }
 
 /**
- * makeAuthMiddleware(cookieName, loginPath) — factory returning a requireAuth middleware.
+ * makeAuthMiddleware(cookieName, loginPath, envVar) — factory returning a requireAuth middleware.
  * The returned middleware validates the HMAC token in req.cookies[cookieName].
- * Redirects to loginPath if missing or invalid; returns 500 if ADMIN_PASSWORD unset.
+ * Redirects to loginPath if missing or invalid; returns 500 if the password env var is unset.
  *
- * @param {string} cookieName  - Name of the cookie to read (e.g. 'scan_auth', 'admin_auth')
+ * @param {string} cookieName  - Name of the cookie to read (e.g. 'scan_auth', 'admin_auth', 'team_auth')
  * @param {string} [loginPath='/scan/login']  - Redirect target when unauthenticated
+ * @param {string} [envVar='ADMIN_PASSWORD']  - Env var holding the shared password for this area
  */
-function makeAuthMiddleware(cookieName, loginPath = '/scan/login') {
+function makeAuthMiddleware(cookieName, loginPath = '/scan/login', envVar = 'ADMIN_PASSWORD') {
   return function requireAuth(req, res, next) {
-    const password = process.env.ADMIN_PASSWORD;
+    const password = process.env[envVar];
     if (!password) {
-      return res.status(500).send('ADMIN_PASSWORD not configured');
+      return res.status(500).send(`${envVar} not configured`);
     }
     const token = req.cookies[cookieName];
     const expected = makeToken(password);
